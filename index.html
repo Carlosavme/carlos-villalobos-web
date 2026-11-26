@@ -2355,5 +2355,31 @@ iframe[src*="netlify"] {
     setTimeout(ocultarBadge, 1000);
   });
 </script>
+  <script>
+  (function () {
+    function limpiarNetlifyBadge() {
+      const candidatos = document.querySelectorAll("a, div, span, aside, iframe");
+      candidatos.forEach((el) => {
+        const texto = (el.innerText || el.textContent || "").toLowerCase();
+        const href = (el.getAttribute("href") || "").toLowerCase();
+        const src = (el.getAttribute("src") || "").toLowerCase();
+        const esBadge =
+          texto.includes("powered by netlify") ||
+          href.includes("netlify.com") ||
+          src.includes("netlify");
+
+        if (esBadge && el.offsetHeight > 0 && el.offsetHeight < 140 && el.offsetWidth < 400) {
+          el.style.setProperty("display", "none", "important");
+          el.style.setProperty("visibility", "hidden", "important");
+          el.style.setProperty("pointer-events", "none", "important");
+        }
+      });
+    }
+
+    window.addEventListener("load", limpiarNetlifyBadge);
+    const observer = new MutationObserver(limpiarNetlifyBadge);
+    observer.observe(document.documentElement, { childList: true, subtree: true });
+  })();
+</script>
 </body>
 </html>
