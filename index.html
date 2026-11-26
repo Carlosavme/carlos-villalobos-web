@@ -2337,5 +2337,23 @@ iframe[src*="netlify"] {
         .replace(/'/g, '&#039;');
     }
   </script>
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const ocultarBadge = () => {
+      document.querySelectorAll("a, div, iframe").forEach(el => {
+        const txt = (el.textContent || "").toLowerCase();
+        const href = (el.getAttribute("href") || "").toLowerCase();
+        const src = (el.getAttribute("src") || "").toLowerCase();
+        if (txt.includes("powered by netlify") || href.includes("netlify.com") || src.includes("netlify")) {
+          if (el.offsetHeight < 120 && el.offsetWidth < 360) {
+            el.style.setProperty("display", "none", "important");
+          }
+        }
+      });
+    };
+    ocultarBadge();
+    setTimeout(ocultarBadge, 1000);
+  });
+</script>
 </body>
 </html>
