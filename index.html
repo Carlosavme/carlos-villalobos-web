@@ -1,0 +1,2328 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carlos Villalobos — Despacho, Columnas y Gestión Cultural</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Combinación tipográfica geométrica: Montserrat (estilo Gotham) + Work Sans para lectura -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Work+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['"Montserrat"', 'Helvetica Neue', 'Arial', 'sans-serif'],
+            serif: ['"Work Sans"', 'Helvetica Neue', 'Arial', 'sans-serif'],
+            sans: ['"Montserrat"', 'Helvetica Neue', 'Arial', 'sans-serif'],
+            body: ['"Work Sans"', 'Helvetica Neue', 'Arial', 'sans-serif'],
+            mono: ['"Montserrat"', 'Helvetica Neue', 'Arial', 'sans-serif'],
+          },
+          colors: {
+            ink: '#0D0D0D',
+            paper: '#FAFAFA',
+            sheet: '#FFFFFF',
+            ash: '#525252',
+            rule: '#0D0D0D',
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* Estética editorial geométrica en blanco y negro (0px border-radius) */
+    * {
+      border-radius: 0px !important;
+    }
+
+    body {
+      background-color: #FAFAFA;
+      color: #0D0D0D;
+      font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Filete arquitectónico limpio */
+    .double-rule-top {
+      border-top: 2px solid #0D0D0D;
+    }
+
+    .double-rule-bottom {
+      border-bottom: 2px solid #0D0D0D;
+    }
+
+    /* Fotografía editorial en blanco y negro de alto contraste */
+    .press-photo {
+      filter: grayscale(100%) contrast(1.16) brightness(0.99);
+      transition: filter 0.25s ease;
+    }
+    article:hover .press-photo,
+    .photo-frame:hover .press-photo {
+      filter: grayscale(100%) contrast(1.25) brightness(1);
+    }
+
+    /* Letra capitular geométrica en Montserrat para lectura de columna */
+    .drop-cap::first-letter {
+      float: left;
+      font-family: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+      font-size: 3.5rem;
+      line-height: 0.82;
+      padding-top: 4px;
+      padding-right: 12px;
+      padding-bottom: 2px;
+      font-weight: 800;
+      color: #0D0D0D;
+    }
+
+    /* Barra de desplazamiento sobria */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #FAFAFA;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #0D0D0D;
+    }
+
+    /* Modo impresión para el Dossier */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #dossier-printable, #dossier-printable * {
+        visibility: visible;
+      }
+      #dossier-printable {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        border: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-paper text-ink selection:bg-ink selection:text-sheet">
+
+  <!-- =====================================================================
+       CINTILLO SUPERIOR DE REVISTA & ACCESO A REDACCIÓN (CMS)
+  ====================================================================== -->
+  <div class="border-b border-ink bg-paper">
+    <div class="max-w-5xl mx-auto px-4 sm:px-8 py-3 flex flex-wrap items-center justify-between gap-2 text-[11px] font-display font-semibold uppercase tracking-[0.12em]">
+      <div class="flex items-center gap-3">
+        <span>Oaxaca de Juárez, Méx.</span>
+        <span class="hidden sm:inline">/</span>
+        <span id="masthead-date" class="hidden sm:inline text-ash font-medium">Archivo General</span>
+      </div>
+
+      <nav class="flex items-center gap-4 sm:gap-6">
+        <a href="#eje-editorial" class="hover:underline underline-offset-4">Eje Editorial</a>
+        <a href="#columnas" class="hover:underline underline-offset-4">Columnas</a>
+        <a href="#gestion" class="hover:underline underline-offset-4">Gestión</a>
+        <a href="#contacto" class="hover:underline underline-offset-4">Contacto</a>
+        <button
+          id="open-cms-btn"
+          type="button"
+          class="px-3 py-1 bg-ink text-sheet hover:bg-sheet hover:text-ink border border-ink font-display font-bold tracking-[0.1em] transition-colors cursor-pointer"
+          title="Abrir mesa de redacción para publicar o editar columnas"
+        >
+          Redacción / CMS
+        </button>
+      </nav>
+    </div>
+  </div>
+
+  <main id="inicio" class="max-w-5xl mx-auto px-4 sm:px-8 pb-16">
+
+    <!-- =====================================================================
+         BLOQUE 1: CABECERA EDITORIAL & IDENTIDAD
+    ====================================================================== -->
+    <header class="pt-8 sm:pt-12 pb-12">
+      <!-- Cabecera principal estilo Gotham / Montserrat de alto impacto -->
+      <div class="border-b border-ink pb-6 mb-8">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-3">
+          <span id="profile-role-display" class="font-display font-bold text-[11px] uppercase tracking-[0.18em] text-ash">
+            Despacho · Periodismo Cultural · Gestión
+          </span>
+          <span id="profile-location-display" class="font-display font-semibold text-[11px] uppercase tracking-[0.15em] text-ash">
+            Istmo de Tehuantepec / Valles Centrales
+          </span>
+        </div>
+        <h1 id="profile-name-display" class="font-display text-4xl sm:text-6xl md:text-7xl font-extrabold uppercase tracking-[-0.03em] text-ink leading-[0.95]">
+          Carlos Villalobos
+        </h1>
+      </div>
+
+      <!-- Retícula asimétrica de portada: Retrato B/N + Semblanza y Enlaces -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+        <!-- Columna izquierda: Fotografía editorial -->
+        <div class="md:col-span-4">
+          <figure class="photo-frame border border-ink bg-sheet p-2">
+            <div class="aspect-[4/5] w-full overflow-hidden bg-neutral-200 border border-ink/15">
+              <img
+                id="profile-photo-display"
+                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80"
+                alt="Carlos Villalobos"
+                onerror="this.src='https://placehold.co/600x750/0D0D0D/FAFAFA?text=Carlos+Villalobos'"
+                class="w-full h-full object-cover press-photo"
+              />
+            </div>
+            <figcaption class="pt-2 px-0.5 flex items-center justify-between font-display font-semibold text-[10px] uppercase tracking-[0.12em] text-ash">
+              <span>Fig. 01 — Archivo</span>
+              <span>Oaxaca</span>
+            </figcaption>
+          </figure>
+        </div>
+
+        <!-- Columna derecha: Bio seca + Directorio directo -->
+        <div class="md:col-span-8 flex flex-col justify-between h-full">
+          <div>
+            <p id="profile-bio-display" class="font-display text-xl sm:text-2xl font-semibold tracking-[-0.015em] text-ink leading-snug mb-5">
+              Comunicador, analista y gestor cultural. Escribe, edita y coordina proyectos entre el Istmo y los Valles Centrales de Oaxaca.
+            </p>
+
+            <p id="profile-subbio-display" class="font-body text-base text-ash leading-relaxed mb-8 max-w-2xl">
+              Su trabajo cruza el análisis de medios y espacio público con la producción radiofónica, el periodismo regional y el acompañamiento a escenas musicales independientes.
+            </p>
+          </div>
+
+          <!-- Enlaces directos -->
+          <div class="border-t border-ink pt-4">
+            <span class="block font-display font-bold text-[10px] uppercase tracking-[0.18em] text-ash mb-3">
+              Canales directos y circulación
+            </span>
+            <div class="flex flex-wrap items-center gap-x-6 gap-y-2 font-display font-bold text-xs uppercase tracking-[0.1em]">
+              <a
+                id="link-substack"
+                href="https://carlosvillalobos.substack.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1.5 border border-ink px-3 py-1.5 bg-sheet hover:bg-ink hover:text-sheet transition-colors"
+              >
+                <span>Substack</span>
+                <span>↗</span>
+              </a>
+
+              <a
+                id="link-x"
+                href="https://x.com/carlosavm_"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1.5 border border-ink px-3 py-1.5 bg-sheet hover:bg-ink hover:text-sheet transition-colors"
+              >
+                <span>X (@carlosavm_)</span>
+                <span>↗</span>
+              </a>
+
+              <a
+                id="link-fb"
+                href="https://facebook.com/Carlosavme"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1.5 border border-ink px-3 py-1.5 bg-sheet hover:bg-ink hover:text-sheet transition-colors"
+              >
+                <span>Facebook</span>
+                <span>↗</span>
+              </a>
+
+              <a
+                href="#contacto"
+                class="inline-flex items-center gap-1.5 text-ash hover:text-ink px-2 py-1.5 transition-colors"
+              >
+                <span>Prensa / Correo ↓</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- =====================================================================
+         BLOQUE 2: EL EJE EDITORIAL (Índice de 3 tarjetas permanentes)
+    ====================================================================== -->
+    <section id="eje-editorial" class="pt-4 pb-12">
+      <div class="double-rule-top pt-4 mb-6 flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
+        <h2 class="font-display text-xl sm:text-2xl font-extrabold tracking-[-0.02em] uppercase">
+          I. El Eje Editorial
+        </h2>
+        <span class="font-display font-semibold text-[11px] uppercase tracking-[0.14em] text-ash">
+          Archivos generales de consulta permanente
+        </span>
+      </div>
+
+      <!-- Tabla/Índice de 3 columnas con bordes nítidos de 1px -->
+      <div class="grid grid-cols-1 md:grid-cols-3 border border-ink divide-y md:divide-y-0 md:divide-x divide-ink bg-sheet">
+        
+        <!-- 01. LEER -->
+        <a
+          id="eje-leer-link"
+          href="https://carlosvillalobos.substack.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group p-6 flex flex-col justify-between hover:bg-ink hover:text-sheet transition-colors"
+        >
+          <div>
+            <div class="flex items-center justify-between font-display font-bold text-[11px] uppercase tracking-[0.14em] mb-4 pb-2 border-b border-current/20">
+              <span>01 / Leer</span>
+              <span>Substack ↗</span>
+            </div>
+            <h3 id="eje-leer-title" class="font-display text-xl sm:text-2xl font-extrabold tracking-[-0.02em] leading-tight mb-3">
+              Pongamos todo en perspectiva
+            </h3>
+            <p id="eje-leer-desc" class="font-body text-sm text-ash group-hover:text-neutral-300 leading-relaxed mb-6">
+              Columna semanal y ensayos breves sobre cultura, medios de comunicación y debate público. Archivo completo de entregas.
+            </p>
+          </div>
+          <div class="font-display font-bold text-xs uppercase tracking-[0.1em] flex items-center justify-between pt-2">
+            <span class="underline underline-offset-4">Ir al archivo escrito</span>
+            <span>→</span>
+          </div>
+        </a>
+
+        <!-- 02. ESCUCHAR -->
+        <a
+          id="eje-escuchar-link"
+          href="https://carlosvillalobos.substack.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group p-6 flex flex-col justify-between hover:bg-ink hover:text-sheet transition-colors"
+        >
+          <div>
+            <div class="flex items-center justify-between font-display font-bold text-[11px] uppercase tracking-[0.14em] mb-4 pb-2 border-b border-current/20">
+              <span>02 / Escuchar</span>
+              <span>Radio &amp; Audio ↗</span>
+            </div>
+            <h3 id="eje-escuchar-title" class="font-display text-xl sm:text-2xl font-extrabold tracking-[-0.02em] leading-tight mb-3">
+              Par de Apuntes
+            </h3>
+            <p id="eje-escuchar-desc" class="font-body text-sm text-ash group-hover:text-neutral-300 leading-relaxed mb-6">
+              Comentario radiofónico semanal en <em>El Tiempo Estatal de la Hora Nacional — Oaxaca</em>. Archivo de emisiones.
+            </p>
+          </div>
+          <div class="font-display font-bold text-xs uppercase tracking-[0.1em] flex items-center justify-between pt-2">
+            <span class="underline underline-offset-4">Lista de emisiones</span>
+            <span>→</span>
+          </div>
+        </a>
+
+        <!-- 03. VER -->
+        <a
+          id="eje-ver-link"
+          href="https://carlosvillalobos.substack.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group p-6 flex flex-col justify-between hover:bg-ink hover:text-sheet transition-colors"
+        >
+          <div>
+            <div class="flex items-center justify-between font-display font-bold text-[11px] uppercase tracking-[0.14em] mb-4 pb-2 border-b border-current/20">
+              <span>03 / Ver</span>
+              <span>Video ↗</span>
+            </div>
+            <h3 id="eje-ver-title" class="font-display text-xl sm:text-2xl font-extrabold tracking-[-0.02em] leading-tight mb-3">
+              Notas para entender el caos
+            </h3>
+            <p id="eje-ver-desc" class="font-body text-sm text-ash group-hover:text-neutral-300 leading-relaxed mb-6">
+              Cápsulas de opinión y lectura crítica en video para <em>Ahora Oaxaca</em>. Serie completa de entregas audiovisuales.
+            </p>
+          </div>
+          <div class="font-display font-bold text-xs uppercase tracking-[0.1em] flex items-center justify-between pt-2">
+            <span class="underline underline-offset-4">Ver cápsulas</span>
+            <span>→</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         SECCIÓN DE COLUMNAS (Alimentada desde el panel Redacción / CMS)
+    ====================================================================== -->
+    <section id="columnas" class="pt-4 pb-12">
+      <div class="double-rule-top pt-4 mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <h2 class="font-display text-xl sm:text-2xl font-extrabold tracking-[-0.02em] uppercase">
+            II. Archivo de Columnas
+          </h2>
+          <p class="font-display font-semibold text-[11px] uppercase tracking-[0.14em] text-ash mt-1">
+            Textos recientes · Edición local y notas de cuaderno
+          </p>
+        </div>
+
+        <!-- Filtros por categoría + Acceso directo a escribir -->
+        <div class="flex flex-wrap items-center gap-2">
+          <div id="category-filters" class="flex flex-wrap items-center gap-1.5">
+            <!-- Renderizado dinámico -->
+          </div>
+          <button
+            type="button"
+            onclick="openCmsEditor()"
+            class="px-3 py-1 font-display font-bold text-[11px] uppercase tracking-[0.1em] bg-ink text-sheet border border-ink hover:bg-sheet hover:text-ink transition-colors cursor-pointer"
+          >
+            + Nueva columna
+          </button>
+        </div>
+      </div>
+
+      <!-- Retícula editorial asimétrica -->
+      <div id="columns-grid" class="grid grid-cols-1 md:grid-cols-12 gap-6">
+        <!-- Renderizado dinámico -->
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         BLOQUE 3: GESTIÓN Y MEDIOS
+    ====================================================================== -->
+    <section id="gestion" class="pt-4 pb-12">
+      <div class="double-rule-top pt-4 mb-6 flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
+        <h2 class="font-display text-xl sm:text-2xl font-extrabold tracking-[-0.02em] uppercase">
+          III. Gestión y Medios
+        </h2>
+        <span class="font-display font-semibold text-[11px] uppercase tracking-[0.14em] text-ash">
+          Plataformas, colectivos y dossier profesional
+        </span>
+      </div>
+
+      <div class="border border-ink divide-y divide-ink bg-sheet">
+        
+        <!-- 1. El Garage Istmeño -->
+        <div class="p-6 sm:p-7 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+          <div class="md:col-span-3">
+            <span class="block font-display text-base font-extrabold uppercase tracking-[-0.01em] text-ink">El Garage Istmeño</span>
+            <span class="font-display font-semibold uppercase text-ash text-[11px] tracking-[0.12em]">Medio y Agencia</span>
+          </div>
+          <div class="md:col-span-6">
+            <p id="gestion-garage-desc" class="font-body text-sm sm:text-base text-ink leading-relaxed">
+              Agencia de noticias, archivo periodístico y plataforma de difusión cultural con enfoque en el Istmo de Tehuantepec y el sur de México.
+            </p>
+          </div>
+          <div class="md:col-span-3 md:text-right">
+            <a
+              id="gestion-garage-link"
+              href="https://elgarageistmeno.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-block font-display font-bold text-xs uppercase tracking-[0.1em] px-4 py-2 border border-ink hover:bg-ink hover:text-sheet transition-colors"
+            >
+              elgarageistmeno.com ↗
+            </a>
+          </div>
+        </div>
+
+        <!-- 2. Colectivo Mistú' -->
+        <div class="p-6 sm:p-7 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+          <div class="md:col-span-3">
+            <span class="block font-display text-base font-extrabold uppercase tracking-[-0.01em] text-ink">Colectivo Mistú'</span>
+            <span class="font-display font-semibold uppercase text-ash text-[11px] tracking-[0.12em]">Gestión Musical</span>
+          </div>
+          <div class="md:col-span-6">
+            <p id="gestion-mistu-desc" class="font-body text-sm sm:text-base text-ink leading-relaxed">
+              Iniciativa independiente de articulación, producción y acompañamiento estratégico para proyectos musicales y artistas emergentes en Oaxaca.
+            </p>
+          </div>
+          <div class="md:col-span-3 md:text-right">
+            <a
+              id="gestion-mistu-link"
+              href="#contacto"
+              class="inline-block font-display font-bold text-xs uppercase tracking-[0.1em] px-4 py-2 border border-ink hover:bg-ink hover:text-sheet transition-colors"
+            >
+              Contacto directo →
+            </a>
+          </div>
+        </div>
+
+        <!-- 3. Portafolio / Dossier de Colaboraciones -->
+        <div class="p-6 sm:p-7 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+          <div class="md:col-span-3">
+            <span class="block font-display text-base font-extrabold uppercase tracking-[-0.01em] text-ink">Dossier y Talleres</span>
+            <span class="font-display font-semibold uppercase text-ash text-[11px] tracking-[0.12em]">Hoja de Trabajo</span>
+          </div>
+          <div class="md:col-span-6">
+            <p id="gestion-dossier-desc" class="font-body text-sm sm:text-base text-ink leading-relaxed">
+              Semblanza, líneas de trabajo en comunicación estratégica, curaduría, moderación de mesas y talleres de profesionalización cultural.
+            </p>
+          </div>
+          <div class="md:col-span-3 md:text-right">
+            <button
+              type="button"
+              onclick="openDossierModal()"
+              class="inline-block font-display font-bold text-xs uppercase tracking-[0.1em] px-4 py-2 bg-ink text-sheet border border-ink hover:bg-sheet hover:text-ink transition-colors cursor-pointer"
+            >
+              Consultar Dossier ▤
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         BLOQUE 4: COLOFÓN Y CONTACTO
+    ====================================================================== -->
+    <footer id="contacto" class="pt-4">
+      <div class="double-rule-top pt-6 pb-8 border-b border-ink">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+          <div class="md:col-span-7">
+            <span class="font-display font-bold text-[11px] uppercase tracking-[0.18em] text-ash block mb-2">
+              IV. Correspondencia y Prensa
+            </span>
+            <h2 class="font-display text-2xl sm:text-3xl font-extrabold uppercase tracking-[-0.02em] mb-3">
+              Prensa, talleres y proyectos culturales
+            </h2>
+            <p id="contact-note-display" class="font-body text-base text-ash max-w-xl leading-relaxed mb-6">
+              Para colaboraciones editoriales, entrevistas, impartición de talleres o coordinación de proyectos culturales, escribir directamente a la redacción:
+            </p>
+
+            <div class="flex flex-wrap items-center gap-3">
+              <a
+                id="contact-email-link"
+                href="mailto:carlosavme@gmail.com"
+                class="font-display text-lg sm:text-xl font-extrabold underline underline-offset-4 hover:bg-ink hover:text-sheet px-2 py-1 -ml-2 transition-colors"
+              >
+                carlosavme@gmail.com
+              </a>
+
+              <button
+                type="button"
+                onclick="copyEmail()"
+                class="px-3.5 py-2 font-display font-bold text-xs uppercase tracking-[0.1em] border border-ink bg-sheet hover:bg-ink hover:text-sheet transition-colors cursor-pointer"
+              >
+                <span id="copy-email-text">Copiar dirección</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="md:col-span-5 md:text-right font-display text-xs text-ash space-y-1.5 pt-2">
+            <p class="text-ink font-extrabold uppercase tracking-[0.12em]">Colofón</p>
+            <p class="font-medium"><span id="colophon-name">Carlos Villalobos</span> · Oaxaca de Juárez</p>
+            <p class="font-medium">Composición editorial en blanco y negro.</p>
+            <p class="pt-4 font-semibold">&copy; <span id="current-year"></span> · Todos los derechos reservados.</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- =====================================================================
+       MODAL DE LECTURA DE COLUMNA (Formato hoja de lectura)
+  ====================================================================== -->
+  <div id="reader-modal" class="fixed inset-0 z-50 hidden bg-ink/80 overflow-y-auto p-3 sm:p-6 md:p-10">
+    <div class="max-w-2xl mx-auto bg-sheet border-2 border-ink my-2">
+      <!-- Cintillo superior -->
+      <div class="sticky top-0 bg-sheet border-b border-ink px-5 py-3 flex items-center justify-between z-10">
+        <div class="flex items-center gap-2 font-display font-bold text-[11px] uppercase tracking-[0.1em]">
+          <span id="reader-category" class="px-2 py-0.5 bg-ink text-sheet">Categoría</span>
+          <span id="reader-tag" class="text-ash">#Etiqueta</span>
+        </div>
+        <button
+          type="button"
+          onclick="closeReaderModal()"
+          class="px-3 py-1 font-display font-bold text-xs uppercase tracking-[0.1em] border border-ink hover:bg-ink hover:text-sheet transition-colors cursor-pointer"
+        >
+          Cerrar [ESC]
+        </button>
+      </div>
+
+      <article class="p-6 sm:p-10">
+        <div class="font-display font-bold text-xs uppercase tracking-[0.14em] text-ash mb-3 flex items-center justify-between">
+          <time id="reader-date">FECHA</time>
+          <span>Por Carlos Villalobos</span>
+        </div>
+
+        <h2 id="reader-title" class="font-display text-2xl sm:text-4xl font-extrabold tracking-[-0.025em] leading-tight text-ink mb-5">
+          Título de la columna
+        </h2>
+
+        <p id="reader-summary" class="font-display font-medium text-base sm:text-lg text-ash border-l-2 border-ink pl-4 mb-7 leading-relaxed">
+          Resumen editorial.
+        </p>
+
+        <figure class="mb-8 border border-ink p-1.5 bg-paper">
+          <img
+            id="reader-image"
+            src=""
+            alt=""
+            class="w-full max-h-80 object-cover press-photo"
+          />
+        </figure>
+
+        <!-- Cuerpo formateado en Work Sans -->
+        <div id="reader-body" class="drop-cap space-y-5 font-body text-[17px] text-ink leading-[1.78]">
+        </div>
+
+        <div class="mt-10 pt-5 border-t border-ink flex flex-wrap items-center justify-between gap-4 font-display font-bold text-xs">
+          <span class="text-ash uppercase tracking-[0.1em]">Archivo de Columnas · Oaxaca</span>
+          <a
+            href="https://carlosvillalobos.substack.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-4 py-2 uppercase tracking-[0.1em] bg-ink text-sheet hover:bg-sheet hover:text-ink border border-ink transition-colors"
+          >
+            Suscribirse en Substack ↗
+          </a>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       MODAL DE DOSSIER PROFESIONAL (Imprimible)
+  ====================================================================== -->
+  <div id="dossier-modal" class="fixed inset-0 z-50 hidden bg-ink/80 overflow-y-auto p-3 sm:p-8">
+    <div id="dossier-printable" class="max-w-3xl mx-auto bg-sheet border-2 border-ink my-2">
+      <div class="border-b border-ink px-6 py-3.5 flex items-center justify-between bg-paper">
+        <span class="font-display font-bold text-xs uppercase tracking-[0.14em]">Hoja de Trabajo &amp; Dossier</span>
+        <div class="flex items-center gap-2">
+          <button
+            type="button"
+            onclick="window.print()"
+            class="px-3 py-1 font-display font-bold text-xs uppercase tracking-[0.1em] border border-ink bg-sheet hover:bg-ink hover:text-sheet transition-colors cursor-pointer"
+          >
+            Imprimir / Guardar PDF
+          </button>
+          <button
+            type="button"
+            onclick="closeDossierModal()"
+            class="px-3 py-1 font-display font-bold text-xs uppercase tracking-[0.1em] bg-ink text-sheet cursor-pointer"
+          >
+            Cerrar
+          </button>
+        </div>
+      </div>
+
+      <div class="p-6 sm:p-10 space-y-8">
+        <div class="double-rule-bottom pb-5">
+          <h2 id="dossier-name-display" class="font-display text-3xl sm:text-4xl font-extrabold uppercase tracking-[-0.025em]">Carlos Villalobos</h2>
+          <p id="dossier-role-display" class="font-display font-semibold text-xs uppercase tracking-[0.14em] text-ash mt-1">
+            Comunicación · Periodismo Cultural · Gestión de Proyectos · Oaxaca
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div class="border border-ink p-5">
+            <h3 class="font-display text-sm font-extrabold uppercase tracking-[0.1em] mb-3 border-b border-ink/20 pb-2">Líneas de Trabajo</h3>
+            <ul id="dossier-lines-list" class="font-body text-sm text-ink space-y-2 list-disc list-inside">
+              <li>Columnismo y ensayo sobre cultura y espacio público.</li>
+              <li>Estrategia de comunicación para proyectos culturales.</li>
+              <li>Talleres de profesionalización para músicos y gestores.</li>
+              <li>Moderación de mesas, foros y presentaciones editoriales.</li>
+            </ul>
+          </div>
+
+          <div class="border border-ink p-5">
+            <h3 class="font-display text-sm font-extrabold uppercase tracking-[0.1em] mb-3 border-b border-ink/20 pb-2">Espacios y Medios</h3>
+            <ul id="dossier-spaces-list" class="font-body text-sm text-ink space-y-2 list-disc list-inside">
+              <li><strong>Pongamos todo en perspectiva</strong> (Substack).</li>
+              <li><strong>Par de Apuntes</strong> (El Tiempo Estatal de la Hora Nacional — Oaxaca).</li>
+              <li><strong>Notas para entender el caos</strong> (Ahora Oaxaca).</li>
+              <li><strong>El Garage Istmeño</strong> y <strong>Colectivo Mistú'</strong>.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="border border-ink bg-paper p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <p class="font-display font-bold text-[11px] uppercase tracking-[0.12em] text-ash">Contacto directo para invitaciones</p>
+            <p id="dossier-email-display" class="font-display text-lg font-extrabold mt-0.5">carlosavme@gmail.com</p>
+          </div>
+          <a
+            id="dossier-email-btn"
+            href="mailto:carlosavme@gmail.com?subject=Colaboraci%C3%B3n%20Editorial%20o%20Taller"
+            class="px-4 py-2 font-display font-bold text-xs uppercase tracking-[0.1em] bg-ink text-sheet text-center border border-ink hover:bg-sheet hover:text-ink transition-colors"
+          >
+            Escribir correo →
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       MESA DE REDACCIÓN / CMS VISUAL TIPO WORDPRESS (2 PESTAÑAS)
+  ====================================================================== -->
+  <div id="cms-drawer" class="fixed inset-0 z-50 hidden bg-ink/85 overflow-y-auto">
+    <div class="min-h-screen max-w-6xl mx-auto bg-sheet border-x-2 border-ink flex flex-col">
+      
+      <!-- Barra superior tipo escritorio de WordPress -->
+      <div class="bg-ink text-sheet px-5 sm:px-8 py-3.5 flex flex-wrap items-center justify-between gap-3 sticky top-0 z-20">
+        <div class="flex flex-wrap items-center gap-3">
+          <span class="font-display text-base font-extrabold tracking-tight uppercase">Mesa de Redacción</span>
+          
+          <!-- Navegación por pestañas del CMS -->
+          <div class="flex items-center border border-sheet/40">
+            <button
+              type="button"
+              id="tab-btn-columns"
+              onclick="switchCmsTab('columns')"
+              class="px-3 py-1 font-display font-bold text-[11px] uppercase tracking-[0.1em] bg-sheet text-ink transition-colors cursor-pointer"
+            >
+              Columnas
+            </button>
+            <button
+              type="button"
+              id="tab-btn-frontpage"
+              onclick="switchCmsTab('frontpage')"
+              class="px-3 py-1 font-display font-bold text-[11px] uppercase tracking-[0.1em] bg-ink text-sheet hover:bg-sheet/20 transition-colors cursor-pointer"
+            >
+              Ajustes de Portada
+            </button>
+            <button
+              type="button"
+              id="tab-btn-analytics"
+              onclick="switchCmsTab('analytics')"
+              class="px-3 py-1 font-display font-bold text-[11px] uppercase tracking-[0.1em] bg-ink text-sheet hover:bg-sheet/20 transition-colors cursor-pointer"
+            >
+              Analítica
+            </button>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <div id="cms-feedback" class="hidden font-display font-bold text-[11px] px-2.5 py-1 bg-sheet text-ink uppercase tracking-[0.1em]">
+            Guardado
+          </div>
+          <label class="px-3 py-1 font-display font-bold text-xs uppercase tracking-[0.1em] border border-sheet/40 hover:bg-sheet hover:text-ink transition-colors cursor-pointer">
+            <span>Importar JSON</span>
+            <input type="file" accept=".json" onchange="importSiteData(event)" class="hidden" />
+          </label>
+          <button
+            type="button"
+            onclick="exportSiteData()"
+            class="px-3 py-1 font-display font-bold text-xs uppercase tracking-[0.1em] border border-sheet/40 hover:bg-sheet hover:text-ink transition-colors cursor-pointer"
+          >
+            Exportar JSON
+          </button>
+          <button
+            type="button"
+            onclick="closeCmsEditor()"
+            class="px-3.5 py-1 font-display font-extrabold text-xs uppercase tracking-[0.1em] bg-sheet text-ink hover:bg-paper transition-colors cursor-pointer"
+          >
+            Cerrar ✕
+          </button>
+        </div>
+      </div>
+
+      <!-- =================================================================
+           PESTAÑA 1: GESTOR DE COLUMNAS
+      ================================================================== -->
+      <div id="cms-tab-columns" class="grid grid-cols-1 lg:grid-cols-12 flex-1">
+        
+        <!-- Columna izquierda: Archivo de entradas -->
+        <aside class="lg:col-span-4 border-b lg:border-b-0 lg:border-r border-ink bg-paper p-5 sm:p-6 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3 pb-2 border-b border-ink">
+              <h3 class="font-display text-xs uppercase tracking-[0.14em] font-extrabold">
+                Archivo (<span id="cms-count">0</span>)
+              </h3>
+              <button
+                type="button"
+                onclick="resetColumnForm()"
+                class="px-2.5 py-1 font-display font-bold text-[11px] uppercase tracking-[0.1em] bg-ink text-sheet hover:bg-ash transition-colors cursor-pointer"
+              >
+                + Nueva
+              </button>
+            </div>
+
+            <div id="cms-posts-list" class="space-y-2 max-h-[520px] overflow-y-auto pr-1">
+              <!-- Lista de columnas -->
+            </div>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-ink/20 space-y-2">
+            <button
+              type="button"
+              onclick="switchCmsTab('frontpage')"
+              class="w-full py-2 font-display font-bold text-[11px] uppercase tracking-[0.1em] border border-ink bg-sheet hover:bg-ink hover:text-sheet transition-colors cursor-pointer"
+            >
+              Editar foto, bio y enlaces →
+            </button>
+            <p class="font-body text-[11px] text-ash leading-relaxed">
+              Los cambios se almacenan en tu navegador. Usa <strong>Exportar JSON</strong> para respaldar tu archivo completo.
+            </p>
+          </div>
+        </aside>
+
+        <!-- Columna derecha: Editor estilo WordPress -->
+        <section class="lg:col-span-8 p-5 sm:p-8 bg-sheet">
+          <div class="flex items-center justify-between pb-3 mb-6 border-b border-ink">
+            <div>
+              <span id="form-mode-label" class="font-display font-bold text-[11px] uppercase tracking-[0.14em] text-ash">
+                Nueva Columna
+              </span>
+              <h3 class="font-display text-xl font-extrabold uppercase tracking-tight">
+                Editor de Texto
+              </h3>
+            </div>
+          </div>
+
+          <form id="column-editor-form" onsubmit="handleSaveColumn(event)" class="space-y-5">
+            <input type="hidden" id="col-id" value="" />
+
+            <!-- Título -->
+            <div>
+              <label for="col-title" class="block font-display font-bold text-xs uppercase tracking-[0.1em] mb-1.5">
+                Titular de la columna *
+              </label>
+              <input
+                type="text"
+                id="col-title"
+                required
+                placeholder="Escribe el titular..."
+                class="w-full font-display text-xl sm:text-2xl font-bold p-3 border border-ink bg-paper focus:bg-sheet focus:outline-none"
+              />
+            </div>
+
+            <!-- Fecha, Categoría, Etiqueta -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label for="col-date" class="block font-display font-bold text-xs uppercase tracking-[0.1em] mb-1.5">
+                  Fecha *
+                </label>
+                <input
+                  type="text"
+                  id="col-date"
+                  required
+                  placeholder="26 NOV 2026"
+                  class="w-full font-display font-semibold text-sm p-2.5 border border-ink bg-sheet focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label for="col-category" class="block font-display font-bold text-xs uppercase tracking-[0.1em] mb-1.5">
+                  Sección / Categoría *
+                </label>
+                <select
+                  id="col-category"
+                  class="w-full font-display font-semibold text-sm p-2.5 border border-ink bg-sheet focus:outline-none"
+                >
+                  <option value="Cultura">Cultura</option>
+                  <option value="Medios">Medios</option>
+                  <option value="Opinión">Opinión</option>
+                  <option value="Música">Música</option>
+                  <option value="Crónica">Crónica</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="col-tag" class="block font-display font-bold text-xs uppercase tracking-[0.1em] mb-1.5">
+                  Etiqueta *
+                </label>
+                <input
+                  type="text"
+                  id="col-tag"
+                  required
+                  placeholder="#Oaxaca"
+                  class="w-full font-display font-semibold text-sm p-2.5 border border-ink bg-sheet focus:outline-none"
+                />
+              </div>
+            </div>
+
+            <!-- Imagen destacada -->
+            <div>
+              <label class="block font-display font-bold text-xs uppercase tracking-[0.1em] mb-1.5">
+                Fotografía (se imprime automáticamente en blanco y negro)
+              </label>
+              <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5">
+                <div class="sm:col-span-8">
+                  <input
+                    type="text"
+                    id="col-image"
+                    placeholder="Pega enlace de imagen o sube un archivo..."
+                    class="w-full font-body text-xs p-2.5 border border-ink bg-sheet focus:outline-none"
+                  />
+                </div>
+                <div class="sm:col-span-4">
+                  <label class="w-full h-full inline-flex items-center justify-center px-3 py-2 font-display font-bold text-xs uppercase tracking-[0.1em] border border-ink bg-paper hover:bg-ink hover:text-sheet transition-colors cursor-pointer">
+                    <span>Subir foto</span>
+                    <input type="file" accept="image/*" onchange="handleImageUpload(event)" class="hidden" />
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Resumen / Balazo -->
+            <div>
+              <label for="col-summary" class="block font-display font-bold text-xs uppercase tracking-[0.1em] mb-1.5">
+                Sumario / Extracto (aparece en portada) *
+              </label>
+              <textarea
+                id="col-summary"
+                rows="2"
+                required
+                placeholder="Síntesis breve de dos líneas..."
+                class="w-full font-body text-base p-3 border border-ink bg-sheet focus:outline-none"
+              ></textarea>
+            </div>
+
+            <!-- Barra de formato tipo WordPress + Cuerpo -->
+            <div>
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-1.5">
+                <label for="col-body" class="font-display font-bold text-xs uppercase tracking-[0.1em]">
+                  Cuerpo de la columna
+                </label>
+                <div class="flex items-center gap-1 font-display font-bold text-xs">
+                  <button type="button" onclick="wrapText('**', '**')" class="px-2.5 py-0.5 border border-ink hover:bg-ink hover:text-sheet cursor-pointer" title="Negritas">
+                    <strong>B</strong>
+                  </button>
+                  <button type="button" onclick="wrapText('*', '*')" class="px-2.5 py-0.5 border border-ink hover:bg-ink hover:text-sheet cursor-pointer" title="Cursivas">
+                    <em>I</em>
+                  </button>
+                  <button type="button" onclick="wrapText('\n> ', '\n')" class="px-2.5 py-0.5 border border-ink hover:bg-ink hover:text-sheet cursor-pointer" title="Cita destacada">
+                    “Cita”
+                  </button>
+                </div>
+              </div>
+              <textarea
+                id="col-body"
+                rows="8"
+                placeholder="Redacta aquí el texto completo..."
+                class="w-full font-body text-base leading-relaxed p-3 border border-ink bg-sheet focus:outline-none"
+              ></textarea>
+            </div>
+
+            <!-- Botones -->
+            <div class="pt-4 border-t border-ink flex flex-wrap items-center justify-between gap-3">
+              <button
+                type="button"
+                id="delete-col-btn"
+                onclick="deleteCurrentColumn()"
+                class="hidden px-4 py-2 font-display font-bold text-xs uppercase tracking-[0.1em] border border-ink hover:bg-ink hover:text-sheet transition-colors cursor-pointer"
+              >
+                Eliminar entrada
+              </button>
+
+              <div class="flex items-center gap-3 ml-auto">
+                <button
+                  type="button"
+                  onclick="resetColumnForm()"
+                  class="px-4 py-2 font-display font-bold text-xs uppercase tracking-[0.1em] border border-ink/40 text-ash hover:text-ink hover:border-ink transition-colors cursor-pointer"
+                >
+                  Limpiar
+                </button>
+                <button
+                  type="submit"
+                  class="px-6 py-2 font-display font-extrabold text-xs uppercase tracking-[0.12em] bg-ink text-sheet border border-ink hover:bg-sheet hover:text-ink transition-colors cursor-pointer"
+                >
+                  Publicar en portada
+                </button>
+              </div>
+            </div>
+          </form>
+        </section>
+
+      </div>
+
+      <!-- =================================================================
+           PESTAÑA 2: AJUSTES DE PORTADA (EDICIÓN VISUAL DE TODOS LOS BLOQUES)
+      ================================================================== -->
+      <div id="cms-tab-frontpage" class="hidden p-5 sm:p-8 bg-paper flex-1">
+        <form id="frontpage-settings-form" onsubmit="handleSaveFrontpageSettings(event)" class="max-w-4xl mx-auto space-y-8">
+          
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b-2 border-ink">
+            <div>
+              <span class="font-display font-bold text-[11px] uppercase tracking-[0.14em] text-ash">
+                Personalización Integral
+              </span>
+              <h3 class="font-display text-2xl font-extrabold uppercase tracking-tight">
+                Ajustes de Portada y Bloques Fijos
+              </h3>
+            </div>
+            <div class="flex items-center gap-2">
+              <button
+                type="button"
+                onclick="resetFrontpageDefaults()"
+                class="px-3.5 py-2 font-display font-bold text-xs uppercase tracking-[0.1em] border border-ink bg-sheet hover:bg-ink hover:text-sheet transition-colors cursor-pointer"
+              >
+                Restaurar textos base
+              </button>
+              <button
+                type="submit"
+                class="px-5 py-2 font-display font-extrabold text-xs uppercase tracking-[0.12em] bg-ink text-sheet border border-ink hover:bg-sheet hover:text-ink transition-colors cursor-pointer"
+              >
+                Guardar toda la portada
+              </button>
+            </div>
+          </div>
+
+          <!-- 1. BLOQUE IDENTIDAD Y RETRATO -->
+          <fieldset class="border border-ink bg-sheet p-5 sm:p-6 space-y-4">
+            <legend class="px-2 font-display font-extrabold text-xs uppercase tracking-[0.14em] bg-ink text-sheet">
+              1. Identidad, Retrato y Redes Activas
+            </legend>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+              <!-- Vista previa del retrato -->
+              <div class="md:col-span-3">
+                <div class="aspect-[4/5] w-full border border-ink bg-neutral-200 overflow-hidden mb-2">
+                  <img
+                    id="fp-photo-preview"
+                    src=""
+                    alt="Vista previa"
+                    class="w-full h-full object-cover press-photo"
+                  />
+                </div>
+                <label class="w-full inline-flex items-center justify-center px-3 py-2 font-display font-bold text-[11px] uppercase tracking-[0.1em] border border-ink bg-paper hover:bg-ink hover:text-sheet transition-colors cursor-pointer">
+                  <span>Subir nuevo retrato</span>
+                  <input type="file" accept="image/*" onchange="handleProfilePhotoUpload(event)" class="hidden" />
+                </label>
+              </div>
+
+              <!-- Campos de identidad -->
+              <div class="md:col-span-9 space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block font-display font-bold text-[11px] uppercase tracking-[0.1em] mb-1">Nombre Principal</label>
+                    <input type="text" id="fp-name" required class="w-full font-display font-bold text-sm p-2.5 border border-ink bg-paper focus:bg-sheet focus:outline-none" />
+                  </div>
+                  <div>
+                    <label class="block font-display font-bold text-[11px] uppercase tracking-[0.1em] mb-1">Cintillo de Rol / Oficio</label>
+                    <input type="text" id="fp-role" class="w-full font-display font-semibold text-sm p-2.5 border border-ink bg-paper focus:bg-sheet focus:outline-none" />
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block font-display font-bold text-[11px] uppercase tracking-[0.1em] mb-1">Enlace directo de fotografía (o carga arriba)</label>
+                  <input type="text" id="fp-photo" oninput="document.getElementById('fp-photo-preview').src = this.value" class="w-full font-body text-xs p-2.5 border border-ink bg-paper focus:bg-sheet focus:outline-none" />
+                </div>
+
+                <div>
+                  <label class="block font-display font-bold text-[11px] uppercase tracking-[0.1em] mb-1">Semblanza Principal (Titular corto)</label>
+                  <textarea id="fp-bio" rows="2" required class="w-full font-body text-sm p-2.5 border border-ink bg-paper focus:bg-sheet focus:outline-none"></textarea>
+                </div>
+
+                <div>
+                  <label class="block font-display font-bold text-[11px] uppercase tracking-[0.1em] mb-1">Párrafo Complementario de Trayectoria</label>
+                  <textarea id="fp-subbio" rows="2" class="w-full font-body text-sm p-2.5 border border-ink bg-paper focus:bg-sheet focus:outline-none"></textarea>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-ink/20">
+                  <div>
+                    <label class="block font-display font-bold text-[10px] uppercase tracking-[0.1em] text-ash mb-1">Enlace Substack</label>
+                    <input type="url" id="fp-substack" class="w-full font-body text-xs p-2 border border-ink bg-paper focus:bg-sheet focus:outline-none" />
+                  </div>
+                  <div>
+                    <label class="block font-display font-bold text-[10px] uppercase tracking-[0.1em] text-ash mb-1">Enlace X (@carlosavm_)</label>
+                    <input type="url" id="fp-x" class="w-full font-body text-xs p-2 border border-ink bg-paper focus:bg-sheet focus:outline-none" />
+                  </div>
+                  <div>
+                    <label class="block font-display font-bold text-[10px] uppercase tracking-[0.1em] text-ash mb-1">Enlace Facebook</label>
+                    <input type="url" id="fp-fb" class="w-full font-body text-xs p-2 border border-ink bg-paper focus:bg-sheet focus:outline-none" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- 2. BLOQUE EL EJE EDITORIAL -->
+          <fieldset class="border border-ink bg-sheet p-5 sm:p-6 space-y-5">
+            <legend class="px-2 font-display font-extrabold text-xs uppercase tracking-[0.14em] bg-ink text-sheet">
+              2. El Eje Editorial (Leer / Escuchar / Ver)
+            </legend>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+              <!-- Tarjeta Leer -->
+              <div class="border border-ink p-4 bg-paper space-y-3">
+                <span class="block font-display font-extrabold text-xs uppercase tracking-[0.12em] border-b border-ink pb-1.5">01 / Leer</span>
+                <div>
+                  <label class="block font-display font-bold text-[10px] uppercase text-ash mb-1">Título del espacio</label>
+                  <input type="text" id="fp-leer-title" class="w-full font-display font-bold text-xs p-2 border border-ink bg-sheet" />
+                </div>
+                <div>
+                  <label class="block font-display font-bold text-[10px] uppercase text-ash mb-1">Descripción</label>
+                  <textarea id="fp-leer-desc" rows="3" class="w-full font-body text-xs p-2 border border-ink bg-sheet"></textarea>
+                </div>
+                <div>
+                  <label class="block font-display font-bold text-[10px] uppercase text-ash mb-1">Enlace al archivo</label>
+                  <input type="url" id="fp-leer-link" class="w-full font-body text-xs p-2 border border-ink bg-sheet" />
+                </div>
+              </div>
+
+              <!-- Tarjeta Escuchar -->
+              <div class="border border-ink p-4 bg-paper space-y-3">
+                <span class="block font-display font-extrabold text-xs uppercase tracking-[0.12em] border-b border-ink pb-1.5">02 / Escuchar</span>
+                <div>
+                  <label class="block font-display font-bold text-[10px] uppercase text-ash mb-1">Título del espacio</label>
+                  <input type="text" id="fp-escuchar-title" class="w-full font-display font-bold text-xs p-2 border border-ink bg-sheet" />
+                </div>
+                <div>
+                  <label class="block font-display font-bold text-[10px] uppercase text-ash mb-1">Descripción</label>
+                  <textarea id="fp-escuchar-desc" rows="3" class="w-full font-body text-xs p-2 border border-ink bg-sheet"></textarea>
+                </div>
+                <div>
+                  <label class="block font-display font-bold text-[10px] uppercase text-ash mb-1">Enlace a lista de audio</label>
+                  <input type="url" id="fp-escuchar-link" class="w-full font-body text-xs p-2 border border-ink bg-sheet" />
+                </div>
+              </div>
+
+              <!-- Tarjeta Ver -->
+              <div class="border border-ink p-4 bg-paper space-y-3">
+                <span class="block font-display font-extrabold text-xs uppercase tracking-[0.12em] border-b border-ink pb-1.5">03 / Ver</span>
+                <div>
+                  <label class="block font-display font-bold text-[10px] uppercase text-ash mb-1">Título del espacio</label>
+                  <input type="text" id="fp-ver-title" class="w-full font-display font-bold text-xs p-2 border border-ink bg-sheet" />
+                </div>
+                <div>
+                  <label class="block font-display font-bold text-[10px] uppercase text-ash mb-1">Descripción</label>
+                  <textarea id="fp-ver-desc" rows="3" class="w-full font-body text-xs p-2 border border-ink bg-sheet"></textarea>
+                </div>
+                <div>
+                  <label class="block font-display font-bold text-[10px] uppercase text-ash mb-1">Enlace a cápsulas de video</label>
+                  <input type="url" id="fp-ver-link" class="w-full font-body text-xs p-2 border border-ink bg-sheet" />
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- 3. BLOQUE GESTIÓN Y MEDIOS + DOSSIER -->
+          <fieldset class="border border-ink bg-sheet p-5 sm:p-6 space-y-5">
+            <legend class="px-2 font-display font-extrabold text-xs uppercase tracking-[0.14em] bg-ink text-sheet">
+              3. Gestión, Medios y Dossier
+            </legend>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <!-- El Garage Istmeño -->
+              <div class="border border-ink p-4 bg-paper space-y-3">
+                <span class="block font-display font-extrabold text-xs uppercase tracking-[0.1em]">El Garage Istmeño</span>
+                <div>
+                  <label class="block font-display font-bold text-[10px] uppercase text-ash mb-1">Descripción</label>
+                  <textarea id="fp-garage-desc" rows="2" class="w-full font-body text-xs p-2 border border-ink bg-sheet"></textarea>
+                </div>
+                <div>
+                  <label class="block font-display font-bold text-[10px] uppercase text-ash mb-1">URL del sitio</label>
+                  <input type="text" id="fp-garage-link" class="w-full font-body text-xs p-2 border border-ink bg-sheet" />
+                </div>
+              </div>
+
+              <!-- Colectivo Mistú' -->
+              <div class="border border-ink p-4 bg-paper space-y-3">
+                <span class="block font-display font-extrabold text-xs uppercase tracking-[0.1em]">Colectivo Mistú'</span>
+                <div>
+                  <label class="block font-display font-bold text-[10px] uppercase text-ash mb-1">Descripción</label>
+                  <textarea id="fp-mistu-desc" rows="2" class="w-full font-body text-xs p-2 border border-ink bg-sheet"></textarea>
+                </div>
+                <div>
+                  <label class="block font-display font-bold text-[10px] uppercase text-ash mb-1">Enlace o ancla (#contacto)</label>
+                  <input type="text" id="fp-mistu-link" class="w-full font-body text-xs p-2 border border-ink bg-sheet" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Dossier -->
+            <div class="border border-ink p-4 bg-paper space-y-3">
+              <span class="block font-display font-extrabold text-xs uppercase tracking-[0.1em]">Dossier de Colaboraciones y Talleres</span>
+              <div>
+                <label class="block font-display font-bold text-[10px] uppercase text-ash mb-1">Descripción en portada</label>
+                <textarea id="fp-dossier-desc" rows="2" class="w-full font-body text-xs p-2 border border-ink bg-sheet"></textarea>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
+                <div>
+                  <label class="block font-display font-bold text-[10px] uppercase text-ash mb-1">Líneas de trabajo (una por línea)</label>
+                  <textarea id="fp-dossier-lines" rows="4" class="w-full font-body text-xs p-2 border border-ink bg-sheet"></textarea>
+                </div>
+                <div>
+                  <label class="block font-display font-bold text-[10px] uppercase text-ash mb-1">Espacios y medios en Dossier (uno por línea)</label>
+                  <textarea id="fp-dossier-spaces" rows="4" class="w-full font-body text-xs p-2 border border-ink bg-sheet"></textarea>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- 4. BLOQUE CONTACTO -->
+          <fieldset class="border border-ink bg-sheet p-5 sm:p-6 space-y-4">
+            <legend class="px-2 font-display font-extrabold text-xs uppercase tracking-[0.14em] bg-ink text-sheet">
+              4. Contacto y Prensa
+            </legend>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+              <div class="md:col-span-5">
+                <label class="block font-display font-bold text-[11px] uppercase tracking-[0.1em] mb-1">Correo electrónico directo</label>
+                <input type="email" id="fp-email" required class="w-full font-display font-bold text-sm p-2.5 border border-ink bg-paper focus:bg-sheet focus:outline-none" />
+              </div>
+              <div class="md:col-span-7">
+                <label class="block font-display font-bold text-[11px] uppercase tracking-[0.1em] mb-1">Nota de invitación para prensa y talleres</label>
+                <input type="text" id="fp-contact-note" class="w-full font-body text-sm p-2.5 border border-ink bg-paper focus:bg-sheet focus:outline-none" />
+              </div>
+            </div>
+          </fieldset>
+
+          <div class="flex justify-end pt-2">
+            <button
+              type="submit"
+              class="px-8 py-3 font-display font-extrabold text-xs uppercase tracking-[0.14em] bg-ink text-sheet border border-ink hover:bg-sheet hover:text-ink transition-colors cursor-pointer"
+            >
+              Guardar y aplicar cambios en portada
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- =================================================================
+           PESTAÑA 3: ANALÍTICA Y MÉTRICAS DE LECTURA
+      ================================================================== -->
+      <div id="cms-tab-analytics" class="hidden p-5 sm:p-8 bg-paper flex-1">
+        <div class="max-w-4xl mx-auto space-y-8">
+          
+          <!-- Cabecera de Analítica -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b-2 border-ink">
+            <div>
+              <span class="font-display font-bold text-[11px] uppercase tracking-[0.14em] text-ash">
+                Medición de Audiencia y Eventos
+              </span>
+              <h3 class="font-display text-2xl font-extrabold uppercase tracking-tight">
+                Analítica e Integraciones
+              </h3>
+            </div>
+            <div class="flex items-center gap-2">
+              <span id="analytics-status-badge" class="px-3 py-1.5 font-display font-bold text-[11px] uppercase tracking-[0.1em] border border-ink bg-sheet text-ink">
+                Estado: Inactivo
+              </span>
+            </div>
+          </div>
+
+          <!-- Formulario de Configuración de Scripts Externos -->
+          <form id="analytics-settings-form" onsubmit="handleSaveAnalyticsSettings(event)" class="border border-ink bg-sheet p-5 sm:p-6 space-y-5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-ink/20">
+              <div>
+                <h4 class="font-display text-sm font-extrabold uppercase tracking-[0.1em]">
+                  1. Proveedores de Analítica Externa
+                </h4>
+                <p class="font-body text-xs text-ash mt-0.5">
+                  Los scripts se inyectan dinámicamente al cargar la página y registran lecturas de columnas y clics salientes.
+                </p>
+              </div>
+
+              <!-- Interruptor Activar / Desactivar -->
+              <label class="inline-flex items-center gap-2.5 px-3 py-2 border border-ink bg-paper cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  id="an-enabled"
+                  class="w-4 h-4 accent-[#0D0D0D] cursor-pointer"
+                />
+                <span class="font-display font-extrabold text-xs uppercase tracking-[0.1em]">
+                  Activar rastreo externo
+                </span>
+              </label>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <!-- Google Analytics 4 -->
+              <div class="border border-ink/30 p-4 bg-paper/50 space-y-2">
+                <label for="an-ga4" class="block font-display font-bold text-xs uppercase tracking-[0.1em]">
+                  Google Analytics 4 (Measurement ID)
+                </label>
+                <input
+                  type="text"
+                  id="an-ga4"
+                  placeholder="G-XXXXXXXXXX"
+                  class="w-full font-display font-semibold text-sm p-2.5 border border-ink bg-sheet focus:outline-none"
+                />
+                <p class="font-body text-[11px] text-ash">
+                  Envía vistas de página y eventos personalizados <code class="bg-paper px-1 border border-ink/20">lectura_columna</code> y <code class="bg-paper px-1 border border-ink/20">clic_enlace</code>.
+                </p>
+              </div>
+
+              <!-- Meta Pixel -->
+              <div class="border border-ink/30 p-4 bg-paper/50 space-y-2">
+                <label for="an-pixel" class="block font-display font-bold text-xs uppercase tracking-[0.1em]">
+                  Meta Pixel ID (Opcional)
+                </label>
+                <input
+                  type="text"
+                  id="an-pixel"
+                  placeholder="123456789012345"
+                  class="w-full font-display font-semibold text-sm p-2.5 border border-ink bg-sheet focus:outline-none"
+                />
+                <p class="font-body text-[11px] text-ash">
+                  Registra <code class="bg-paper px-1 border border-ink/20">PageView</code> y eventos <code class="bg-paper px-1 border border-ink/20">fbq('trackCustom', ...)</code> para difusión de talleres o columnas.
+                </p>
+              </div>
+            </div>
+
+            <!-- Plausible / Umami (Analítica ligera sin cookies) -->
+            <div class="border border-ink/30 p-4 bg-paper/50 space-y-3">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                <label class="font-display font-bold text-xs uppercase tracking-[0.1em]">
+                  Plausible / Umami (Analítica sin cookies · Opcional)
+                </label>
+                <span class="font-display font-semibold text-[10px] uppercase tracking-[0.1em] text-ash">
+                  Privacidad respetuosa
+                </span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="an-privacy-domain" class="block font-display font-bold text-[10px] uppercase text-ash mb-1">
+                    Dominio registrado (ej. carlosvillalobos.mx)
+                  </label>
+                  <input
+                    type="text"
+                    id="an-privacy-domain"
+                    placeholder="carlosvillalobos.mx"
+                    class="w-full font-body text-xs p-2.5 border border-ink bg-sheet focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label for="an-privacy-script" class="block font-display font-bold text-[10px] uppercase text-ash mb-1">
+                    URL del script (ej. https://plausible.io/js/script.js)
+                  </label>
+                  <input
+                    type="url"
+                    id="an-privacy-script"
+                    placeholder="https://plausible.io/js/script.js"
+                    class="w-full font-body text-xs p-2.5 border border-ink bg-sheet focus:outline-none"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="flex justify-end pt-1">
+              <button
+                type="submit"
+                class="px-6 py-2.5 font-display font-extrabold text-xs uppercase tracking-[0.12em] bg-ink text-sheet border border-ink hover:bg-sheet hover:text-ink transition-colors cursor-pointer"
+              >
+                Guardar configuración de analítica
+              </button>
+            </div>
+          </form>
+
+          <!-- Panel Local: Resumen de Lecturas y Clics -->
+          <div class="border border-ink bg-sheet p-5 sm:p-6 space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-ink">
+              <div>
+                <h4 class="font-display text-sm font-extrabold uppercase tracking-[0.1em]">
+                  2. Resumen de Lecturas y Clics (Registro Local)
+                </h4>
+                <p class="font-body text-xs text-ash mt-0.5">
+                  Bitácora inmediata de actividad en este navegador mientras pruebas o editas tu sitio.
+                </p>
+              </div>
+              <button
+                type="button"
+                onclick="resetLocalMetrics()"
+                class="px-3.5 py-1.5 font-display font-bold text-[11px] uppercase tracking-[0.1em] border border-ink bg-paper hover:bg-ink hover:text-sheet transition-colors cursor-pointer"
+              >
+                Reiniciar contadores locales
+              </button>
+            </div>
+
+            <!-- Tarjetas numéricas principales -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 border border-ink divide-y sm:divide-y-0 sm:divide-x divide-ink bg-paper">
+              <div class="p-4">
+                <span class="block font-display font-bold text-[10px] uppercase tracking-[0.12em] text-ash">Visitas a Portada</span>
+                <span id="metric-pageviews" class="block font-display text-3xl font-extrabold mt-1">0</span>
+              </div>
+              <div class="p-4">
+                <span class="block font-display font-bold text-[10px] uppercase tracking-[0.12em] text-ash">Lecturas de Columnas</span>
+                <span id="metric-column-reads" class="block font-display text-3xl font-extrabold mt-1">0</span>
+              </div>
+              <div class="p-4">
+                <span class="block font-display font-bold text-[10px] uppercase tracking-[0.12em] text-ash">Clics Salientes / Contacto</span>
+                <span id="metric-outbound-clicks" class="block font-display text-3xl font-extrabold mt-1">0</span>
+              </div>
+            </div>
+
+            <!-- Tablas detalladas: Columnas más leídas y Destinos más pulsados -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="border border-ink p-4">
+                <h5 class="font-display font-extrabold text-xs uppercase tracking-[0.1em] pb-2 mb-3 border-b border-ink/20">
+                  Columnas más leídas
+                </h5>
+                <div id="metric-top-columns" class="space-y-2 font-body text-xs">
+                  <p class="text-ash">Aún no se registran lecturas de columnas.</p>
+                </div>
+              </div>
+
+              <div class="border border-ink p-4">
+                <h5 class="font-display font-extrabold text-xs uppercase tracking-[0.1em] pb-2 mb-3 border-b border-ink/20">
+                  Clics por enlace y destino
+                </h5>
+                <div id="metric-top-links" class="space-y-2 font-body text-xs">
+                  <p class="text-ash">Aún no se registran clics salientes.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // Columnas iniciales con tono editorial auténtico
+    const DEFAULT_COLUMNS = [
+      {
+        id: 'col-1',
+        date: '21 NOV 2026',
+        category: 'Cultura',
+        tag: '#EspacioPúblico',
+        title: 'La plaza pública no es un aparador turístico',
+        image: 'https://images.unsplash.com/photo-1518998053901-5348d3961a04?auto=format&fit=crop&w=1000&q=80',
+        summary: 'Cuando la cartelera cultural se diseña pensando únicamente en el visitante de paso, los barrios pierden su derecho cotidiano a habitar y narrar la ciudad.',
+        body: `Hablar de política cultural en ciudades con alta vocación turística exige distinguir entre el espectáculo de fin de semana y el tejido comunitario que sostiene la vida artística durante todo el año.\n\n> Recuperar la plaza como lugar de encuentro crítico implica descentralizar recursos y escuchar a quienes producen cultura fuera del primer cuadro.\n\nEn los últimos años hemos visto cómo los centros históricos se convierten en escenografías permanentes. Detrás de esa vitrina persiste una pregunta urgente sobre la sostenibilidad de los foros independientes, las bibliotecas de barrio y los proyectos locales que trabajan sin reflectores.`
+      },
+      {
+        id: 'col-2',
+        date: '14 NOV 2026',
+        category: 'Medios',
+        tag: '#Periodismo',
+        title: 'Escribir sin prisa frente al ruido algorítmico',
+        image: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1000&q=80',
+        summary: 'El regreso a los boletines independientes y la radio de comentario demuestra que todavía hay lectores dispuestos a detenerse diez minutos para entender el contexto.',
+        body: `La economía de la atención nos acostumbró a reaccionar en segundos ante cualquier titular. En ese vértigo, el análisis reposado parecía condenado al archivo muerto.\n\nSin embargo, el crecimiento de boletines de autor y espacios radiofónicos de conversación confirma lo contrario: existe una comunidad que busca contexto antes que velocidad. Escribir sin la presión del clic inmediato permite recuperar el oficio de observar y contrastar.`
+      },
+      {
+        id: 'col-3',
+        date: '07 NOV 2026',
+        category: 'Música',
+        tag: '#EscenaOaxaca',
+        title: 'El trabajo invisible detrás de las bandas independientes',
+        image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1000&q=80',
+        summary: 'Más allá del escenario, sostener un proyecto musical exige gestión, archivo sonoro, prensa y redes de colaboración entre colectivos.',
+        body: `Cuando un grupo sube al escenario, el público escucha el resultado final de meses de ensayo. Rara vez se habla de la infraestructura silenciosa que hace posible que una grabación circule.\n\nDesde la elaboración de carpetas técnicas hasta la gestión de prensa y alianzas entre espacios autogestivos, la escena independiente del sur de México enfrenta el reto de profesionalizar sus procesos sin perder autonomía.`
+      }
+    ];
+
+    const DEFAULT_FRONTPAGE = {
+      name: 'Carlos Villalobos',
+      role: 'Despacho · Periodismo Cultural · Gestión',
+      bio: 'Comunicador, analista y gestor cultural. Escribe, edita y coordina proyectos entre el Istmo y los Valles Centrales de Oaxaca.',
+      subbio: 'Su trabajo cruza el análisis de medios y espacio público con la producción radiofónica, el periodismo regional y el acompañamiento a escenas musicales independientes.',
+      photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80',
+      substack: 'https://carlosvillalobos.substack.com',
+      x: 'https://x.com/carlosavm_',
+      fb: 'https://facebook.com/Carlosavme',
+      leerTitle: 'Pongamos todo en perspectiva',
+      leerDesc: 'Columna semanal y ensayos breves sobre cultura, medios de comunicación y debate público. Archivo completo de entregas.',
+      leerLink: 'https://carlosvillalobos.substack.com',
+      escucharTitle: 'Par de Apuntes',
+      escucharDesc: 'Comentario radiofónico semanal en El Tiempo Estatal de la Hora Nacional — Oaxaca. Archivo de emisiones.',
+      escucharLink: 'https://carlosvillalobos.substack.com',
+      verTitle: 'Notas para entender el caos',
+      verDesc: 'Cápsulas de opinión y lectura crítica en video para Ahora Oaxaca. Serie completa de entregas audiovisuales.',
+      verLink: 'https://carlosvillalobos.substack.com',
+      garageDesc: 'Agencia de noticias, archivo periodístico y plataforma de difusión cultural con enfoque en el Istmo de Tehuantepec y el sur de México.',
+      garageLink: 'https://elgarageistmeno.com',
+      mistuDesc: 'Iniciativa independiente de articulación, producción y acompañamiento estratégico para proyectos musicales y artistas emergentes en Oaxaca.',
+      mistuLink: '#contacto',
+      dossierDesc: 'Semblanza, líneas de trabajo en comunicación estratégica, curaduría, moderación de mesas y talleres de profesionalización cultural.',
+      dossierLines: [
+        'Columnismo y ensayo sobre cultura y espacio público.',
+        'Estrategia de comunicación para proyectos culturales.',
+        'Talleres de profesionalización para músicos y gestores.',
+        'Moderación de mesas, foros y presentaciones editoriales.'
+      ],
+      dossierSpaces: [
+        'Pongamos todo en perspectiva (Substack).',
+        'Par de Apuntes (El Tiempo Estatal de la Hora Nacional — Oaxaca).',
+        'Notas para entender el caos (Ahora Oaxaca).',
+        'El Garage Istmeño y Colectivo Mistú\'.'
+      ],
+      email: 'carlosavme@gmail.com',
+      contactNote: 'Para colaboraciones editoriales, entrevistas, impartición de talleres o coordinación de proyectos culturales, escribir directamente a la redacción:'
+    };
+
+    const DEFAULT_ANALYTICS = {
+      enabled: false,
+      ga4Id: '',
+      metaPixelId: '',
+      privacyDomain: '',
+      privacyScriptUrl: ''
+    };
+
+    const DEFAULT_METRICS = {
+      pageViews: 0,
+      columnReads: {},
+      outboundClicks: {}
+    };
+
+    const STORAGE_KEY_COLS = 'cv_gazette_columns_v4';
+    const STORAGE_KEY_FRONTPAGE = 'cv_gazette_frontpage_v4';
+    const STORAGE_KEY_ANALYTICS = 'cv_gazette_analytics_v1';
+    const STORAGE_KEY_METRICS = 'cv_gazette_metrics_v1';
+
+    let columns = [];
+    let frontpage = { ...DEFAULT_FRONTPAGE };
+    let analyticsConfig = { ...DEFAULT_ANALYTICS };
+    let localMetrics = { pageViews: 0, columnReads: {}, outboundClicks: {} };
+    let activeCategory = 'Todas';
+    let analyticsInjected = false;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const now = new Date();
+      document.getElementById('current-year').textContent = now.getFullYear();
+      const months = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+      document.getElementById('masthead-date').textContent = `${now.getDate()} de ${months[now.getMonth()]} de ${now.getFullYear()}`;
+
+      loadState();
+      initAnalyticsProviders();
+      bindOutboundTracking();
+      trackEditorialEvent('vista_portada', { titulo: frontpage.name });
+
+      renderFrontpage();
+      populateFrontpageForm();
+      populateAnalyticsForm();
+      renderAnalyticsDashboard();
+      renderCategoryFilters();
+      renderColumnsGrid();
+      renderCmsPostsList();
+
+      document.getElementById('open-cms-btn').addEventListener('click', () => openCmsEditor());
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeReaderModal();
+          closeDossierModal();
+          closeCmsEditor();
+        }
+      });
+    });
+
+    function loadState() {
+      try {
+        const savedCols = localStorage.getItem(STORAGE_KEY_COLS);
+        columns = savedCols ? JSON.parse(savedCols) : [...DEFAULT_COLUMNS];
+
+        const savedFp = localStorage.getItem(STORAGE_KEY_FRONTPAGE);
+        if (savedFp) {
+          frontpage = { ...DEFAULT_FRONTPAGE, ...JSON.parse(savedFp) };
+        }
+
+        const savedAn = localStorage.getItem(STORAGE_KEY_ANALYTICS);
+        if (savedAn) {
+          analyticsConfig = { ...DEFAULT_ANALYTICS, ...JSON.parse(savedAn) };
+        }
+
+        const savedMetrics = localStorage.getItem(STORAGE_KEY_METRICS);
+        if (savedMetrics) {
+          const parsed = JSON.parse(savedMetrics);
+          localMetrics = {
+            pageViews: parsed.pageViews || 0,
+            columnReads: parsed.columnReads || {},
+            outboundClicks: parsed.outboundClicks || {}
+          };
+        }
+      } catch (err) {
+        columns = [...DEFAULT_COLUMNS];
+        frontpage = { ...DEFAULT_FRONTPAGE };
+        analyticsConfig = { ...DEFAULT_ANALYTICS };
+        localMetrics = { pageViews: 0, columnReads: {}, outboundClicks: {} };
+      }
+    }
+
+    function saveColumnsToStorage() {
+      try {
+        localStorage.setItem(STORAGE_KEY_COLS, JSON.stringify(columns));
+      } catch (err) {
+        console.error('Error guardando columnas:', err);
+      }
+    }
+
+    function saveFrontpageToStorage() {
+      try {
+        localStorage.setItem(STORAGE_KEY_FRONTPAGE, JSON.stringify(frontpage));
+      } catch (err) {
+        console.error('Error guardando portada:', err);
+      }
+    }
+
+    function saveAnalyticsToStorage() {
+      try {
+        localStorage.setItem(STORAGE_KEY_ANALYTICS, JSON.stringify(analyticsConfig));
+      } catch (err) {
+        console.error('Error guardando analítica:', err);
+      }
+    }
+
+    function saveMetricsToStorage() {
+      try {
+        localStorage.setItem(STORAGE_KEY_METRICS, JSON.stringify(localMetrics));
+      } catch (err) {
+        console.error('Error guardando métricas:', err);
+      }
+    }
+
+    // =====================================================================
+    // MOTOR DE ANALÍTICA EXTERNA E INTERNA
+    // =====================================================================
+    function initAnalyticsProviders() {
+      updateAnalyticsStatusBadge();
+      if (!analyticsConfig.enabled || analyticsInjected) return;
+
+      // 1. Google Analytics 4 (gtag.js)
+      if (analyticsConfig.ga4Id && /^G-[A-Z0-9]+$/i.test(analyticsConfig.ga4Id.trim())) {
+        const gaId = analyticsConfig.ga4Id.trim();
+        const scriptTag = document.createElement('script');
+        scriptTag.async = true;
+        scriptTag.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaId)}`;
+        document.head.appendChild(scriptTag);
+
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () { window.dataLayer.push(arguments); };
+        window.gtag('js', new Date());
+        window.gtag('config', gaId);
+      }
+
+      // 2. Meta Pixel (fbevents.js)
+      if (analyticsConfig.metaPixelId && /^\d+$/.test(analyticsConfig.metaPixelId.trim())) {
+        const pixelId = analyticsConfig.metaPixelId.trim();
+        !(function (f, b, e, v, n, t, s) {
+          if (f.fbq) return;
+          n = f.fbq = function () {
+            n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+          };
+          if (!f._fbq) f._fbq = n;
+          n.push = n;
+          n.loaded = !0;
+          n.version = '2.0';
+          n.queue = [];
+          t = b.createElement(e);
+          t.async = !0;
+          t.src = v;
+          s = b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t, s);
+        })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+        window.fbq('init', pixelId);
+        window.fbq('track', 'PageView');
+      }
+
+      // 3. Plausible / Umami (Script sin cookies)
+      if (analyticsConfig.privacyScriptUrl && analyticsConfig.privacyDomain) {
+        const privacyScript = document.createElement('script');
+        privacyScript.defer = true;
+        privacyScript.setAttribute('data-domain', analyticsConfig.privacyDomain.trim());
+        privacyScript.src = analyticsConfig.privacyScriptUrl.trim();
+        document.head.appendChild(privacyScript);
+      }
+
+      analyticsInjected = true;
+    }
+
+    function trackEditorialEvent(eventName, params = {}) {
+      // Registro local inmediato
+      if (eventName === 'vista_portada') {
+        localMetrics.pageViews = (localMetrics.pageViews || 0) + 1;
+      } else if (eventName === 'lectura_columna' && params.titulo) {
+        const key = `${params.titulo} (${params.categoria || 'Columna'})`;
+        localMetrics.columnReads[key] = (localMetrics.columnReads[key] || 0) + 1;
+      } else if (eventName === 'clic_enlace' && params.destino) {
+        localMetrics.outboundClicks[params.destino] = (localMetrics.outboundClicks[params.destino] || 0) + 1;
+      }
+      saveMetricsToStorage();
+
+      // Envío a proveedores externos si está activo
+      if (!analyticsConfig.enabled) return;
+
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', eventName, params);
+      }
+      if (typeof window.fbq === 'function') {
+        window.fbq('trackCustom', eventName, params);
+      }
+      if (typeof window.plausible === 'function') {
+        window.plausible(eventName, { props: params });
+      }
+    }
+
+    function bindOutboundTracking() {
+      const trackedLinks = [
+        { id: 'link-substack', label: 'Substack (Cabecera)' },
+        { id: 'link-x', label: 'X (@carlosavm_)' },
+        { id: 'link-fb', label: 'Facebook' },
+        { id: 'eje-leer-link', label: 'Eje: Pongamos todo en perspectiva' },
+        { id: 'eje-escuchar-link', label: 'Eje: Par de Apuntes' },
+        { id: 'eje-ver-link', label: 'Eje: Notas para entender el caos' },
+        { id: 'gestion-garage-link', label: 'El Garage Istmeño' },
+        { id: 'gestion-mistu-link', label: 'Colectivo Mistú\'' },
+        { id: 'contact-email-link', label: 'Correo directo (mailto)' }
+      ];
+
+      trackedLinks.forEach(item => {
+        const el = document.getElementById(item.id);
+        if (el) {
+          el.addEventListener('click', () => {
+            trackEditorialEvent('clic_enlace', { destino: item.label, url: el.getAttribute('href') || '' });
+          });
+        }
+      });
+    }
+
+    function populateAnalyticsForm() {
+      document.getElementById('an-enabled').checked = !!analyticsConfig.enabled;
+      document.getElementById('an-ga4').value = analyticsConfig.ga4Id || '';
+      document.getElementById('an-pixel').value = analyticsConfig.metaPixelId || '';
+      document.getElementById('an-privacy-domain').value = analyticsConfig.privacyDomain || '';
+      document.getElementById('an-privacy-script').value = analyticsConfig.privacyScriptUrl || '';
+      updateAnalyticsStatusBadge();
+    }
+
+    function handleSaveAnalyticsSettings(e) {
+      e.preventDefault();
+      analyticsConfig = {
+        enabled: document.getElementById('an-enabled').checked,
+        ga4Id: document.getElementById('an-ga4').value.trim(),
+        metaPixelId: document.getElementById('an-pixel').value.trim(),
+        privacyDomain: document.getElementById('an-privacy-domain').value.trim(),
+        privacyScriptUrl: document.getElementById('an-privacy-script').value.trim()
+      };
+
+      saveAnalyticsToStorage();
+      updateAnalyticsStatusBadge();
+      if (analyticsConfig.enabled) {
+        initAnalyticsProviders();
+      }
+      showCmsFeedback('Analítica guardada');
+    }
+
+    function updateAnalyticsStatusBadge() {
+      const badge = document.getElementById('analytics-status-badge');
+      if (!badge) return;
+      const activeProviders = [];
+      if (analyticsConfig.ga4Id) activeProviders.push('GA4');
+      if (analyticsConfig.metaPixelId) activeProviders.push('Meta Pixel');
+      if (analyticsConfig.privacyScriptUrl) activeProviders.push('Plausible/Umami');
+
+      if (analyticsConfig.enabled && activeProviders.length > 0) {
+        badge.textContent = `Activo: ${activeProviders.join(' · ')}`;
+        badge.className = 'px-3 py-1.5 font-display font-bold text-[11px] uppercase tracking-[0.1em] border border-ink bg-ink text-sheet';
+      } else if (analyticsConfig.enabled) {
+        badge.textContent = 'Activo (Sin IDs configurados)';
+        badge.className = 'px-3 py-1.5 font-display font-bold text-[11px] uppercase tracking-[0.1em] border border-ink bg-sheet text-ink';
+      } else {
+        badge.textContent = 'Estado: Inactivo';
+        badge.className = 'px-3 py-1.5 font-display font-bold text-[11px] uppercase tracking-[0.1em] border border-ink bg-sheet text-ash';
+      }
+    }
+
+    function renderAnalyticsDashboard() {
+      document.getElementById('metric-pageviews').textContent = localMetrics.pageViews || 0;
+
+      const colEntries = Object.entries(localMetrics.columnReads || {}).sort((a, b) => b[1] - a[1]);
+      const totalReads = colEntries.reduce((acc, [, count]) => acc + count, 0);
+      document.getElementById('metric-column-reads').textContent = totalReads;
+
+      const linkEntries = Object.entries(localMetrics.outboundClicks || {}).sort((a, b) => b[1] - a[1]);
+      const totalClicks = linkEntries.reduce((acc, [, count]) => acc + count, 0);
+      document.getElementById('metric-outbound-clicks').textContent = totalClicks;
+
+      const topColsEl = document.getElementById('metric-top-columns');
+      if (colEntries.length === 0) {
+        topColsEl.innerHTML = '<p class="text-ash">Aún no se registran lecturas de columnas.</p>';
+      } else {
+        topColsEl.innerHTML = colEntries.slice(0, 6).map(([title, count]) => `
+          <div class="flex items-center justify-between gap-2 py-1.5 border-b border-ink/10 last:border-b-0">
+            <span class="font-medium text-ink line-clamp-1">${escapeHtml(title)}</span>
+            <span class="font-display font-extrabold px-2 py-0.5 bg-paper border border-ink text-[11px]">${count}</span>
+          </div>
+        `).join('');
+      }
+
+      const topLinksEl = document.getElementById('metric-top-links');
+      if (linkEntries.length === 0) {
+        topLinksEl.innerHTML = '<p class="text-ash">Aún no se registran clics salientes.</p>';
+      } else {
+        topLinksEl.innerHTML = linkEntries.slice(0, 6).map(([dest, count]) => `
+          <div class="flex items-center justify-between gap-2 py-1.5 border-b border-ink/10 last:border-b-0">
+            <span class="font-medium text-ink line-clamp-1">${escapeHtml(dest)}</span>
+            <span class="font-display font-extrabold px-2 py-0.5 bg-paper border border-ink text-[11px]">${count}</span>
+          </div>
+        `).join('');
+      }
+    }
+
+    function resetLocalMetrics() {
+      localMetrics = { pageViews: 0, columnReads: {}, outboundClicks: {} };
+      saveMetricsToStorage();
+      renderAnalyticsDashboard();
+      showCmsFeedback('Contadores reiniciados');
+    }
+
+    // Aplica todos los datos de portada en el DOM público
+    function renderFrontpage() {
+      // Bloque 1: Identidad
+      document.getElementById('profile-name-display').textContent = frontpage.name;
+      document.getElementById('profile-role-display').textContent = frontpage.role;
+      document.getElementById('profile-bio-display').textContent = frontpage.bio;
+      document.getElementById('profile-subbio-display').textContent = frontpage.subbio;
+      document.getElementById('profile-photo-display').src = frontpage.photo;
+      document.getElementById('link-substack').href = frontpage.substack;
+      document.getElementById('link-x').href = frontpage.x;
+      document.getElementById('link-fb').href = frontpage.fb;
+
+      // Bloque 2: El Eje Editorial
+      document.getElementById('eje-leer-title').textContent = frontpage.leerTitle;
+      document.getElementById('eje-leer-desc').textContent = frontpage.leerDesc;
+      document.getElementById('eje-leer-link').href = frontpage.leerLink;
+
+      document.getElementById('eje-escuchar-title').textContent = frontpage.escucharTitle;
+      document.getElementById('eje-escuchar-desc').textContent = frontpage.escucharDesc;
+      document.getElementById('eje-escuchar-link').href = frontpage.escucharLink;
+
+      document.getElementById('eje-ver-title').textContent = frontpage.verTitle;
+      document.getElementById('eje-ver-desc').textContent = frontpage.verDesc;
+      document.getElementById('eje-ver-link').href = frontpage.verLink;
+
+      // Bloque 3: Gestión y Medios
+      document.getElementById('gestion-garage-desc').textContent = frontpage.garageDesc;
+      const garageLinkEl = document.getElementById('gestion-garage-link');
+      garageLinkEl.href = frontpage.garageLink;
+      garageLinkEl.textContent = frontpage.garageLink.replace(/^https?:\/\//, '').replace(/\/$/, '') + ' ↗';
+
+      document.getElementById('gestion-mistu-desc').textContent = frontpage.mistuDesc;
+      document.getElementById('gestion-mistu-link').href = frontpage.mistuLink;
+
+      document.getElementById('gestion-dossier-desc').textContent = frontpage.dossierDesc;
+
+      // Dossier Modal
+      document.getElementById('dossier-name-display').textContent = frontpage.name;
+      document.getElementById('dossier-email-display').textContent = frontpage.email;
+      document.getElementById('dossier-email-btn').href = `mailto:${frontpage.email}?subject=Colaboraci%C3%B3n%20Editorial%20o%20Taller`;
+
+      const linesList = document.getElementById('dossier-lines-list');
+      linesList.innerHTML = (frontpage.dossierLines || []).map(item => `<li>${escapeHtml(item)}</li>`).join('');
+
+      const spacesList = document.getElementById('dossier-spaces-list');
+      spacesList.innerHTML = (frontpage.dossierSpaces || []).map(item => `<li>${escapeHtml(item)}</li>`).join('');
+
+      // Bloque 4: Contacto y Colofón
+      document.getElementById('contact-note-display').textContent = frontpage.contactNote;
+      const emailLinkEl = document.getElementById('contact-email-link');
+      emailLinkEl.textContent = frontpage.email;
+      emailLinkEl.href = `mailto:${frontpage.email}`;
+      document.getElementById('colophon-name').textContent = frontpage.name;
+    }
+
+    // Rellena los campos de la pestaña "Ajustes de Portada"
+    function populateFrontpageForm() {
+      document.getElementById('fp-name').value = frontpage.name || '';
+      document.getElementById('fp-role').value = frontpage.role || '';
+      document.getElementById('fp-photo').value = frontpage.photo || '';
+      document.getElementById('fp-photo-preview').src = frontpage.photo || '';
+      document.getElementById('fp-bio').value = frontpage.bio || '';
+      document.getElementById('fp-subbio').value = frontpage.subbio || '';
+      document.getElementById('fp-substack').value = frontpage.substack || '';
+      document.getElementById('fp-x').value = frontpage.x || '';
+      document.getElementById('fp-fb').value = frontpage.fb || '';
+
+      document.getElementById('fp-leer-title').value = frontpage.leerTitle || '';
+      document.getElementById('fp-leer-desc').value = frontpage.leerDesc || '';
+      document.getElementById('fp-leer-link').value = frontpage.leerLink || '';
+
+      document.getElementById('fp-escuchar-title').value = frontpage.escucharTitle || '';
+      document.getElementById('fp-escuchar-desc').value = frontpage.escucharDesc || '';
+      document.getElementById('fp-escuchar-link').value = frontpage.escucharLink || '';
+
+      document.getElementById('fp-ver-title').value = frontpage.verTitle || '';
+      document.getElementById('fp-ver-desc').value = frontpage.verDesc || '';
+      document.getElementById('fp-ver-link').value = frontpage.verLink || '';
+
+      document.getElementById('fp-garage-desc').value = frontpage.garageDesc || '';
+      document.getElementById('fp-garage-link').value = frontpage.garageLink || '';
+      document.getElementById('fp-mistu-desc').value = frontpage.mistuDesc || '';
+      document.getElementById('fp-mistu-link').value = frontpage.mistuLink || '';
+      document.getElementById('fp-dossier-desc').value = frontpage.dossierDesc || '';
+      document.getElementById('fp-dossier-lines').value = (frontpage.dossierLines || []).join('\n');
+      document.getElementById('fp-dossier-spaces').value = (frontpage.dossierSpaces || []).join('\n');
+
+      document.getElementById('fp-email').value = frontpage.email || '';
+      document.getElementById('fp-contact-note').value = frontpage.contactNote || '';
+    }
+
+    function handleSaveFrontpageSettings(e) {
+      e.preventDefault();
+      frontpage = {
+        name: document.getElementById('fp-name').value.trim() || DEFAULT_FRONTPAGE.name,
+        role: document.getElementById('fp-role').value.trim(),
+        photo: document.getElementById('fp-photo').value.trim() || DEFAULT_FRONTPAGE.photo,
+        bio: document.getElementById('fp-bio').value.trim(),
+        subbio: document.getElementById('fp-subbio').value.trim(),
+        substack: document.getElementById('fp-substack').value.trim() || DEFAULT_FRONTPAGE.substack,
+        x: document.getElementById('fp-x').value.trim() || DEFAULT_FRONTPAGE.x,
+        fb: document.getElementById('fp-fb').value.trim() || DEFAULT_FRONTPAGE.fb,
+        leerTitle: document.getElementById('fp-leer-title').value.trim(),
+        leerDesc: document.getElementById('fp-leer-desc').value.trim(),
+        leerLink: document.getElementById('fp-leer-link').value.trim(),
+        escucharTitle: document.getElementById('fp-escuchar-title').value.trim(),
+        escucharDesc: document.getElementById('fp-escuchar-desc').value.trim(),
+        escucharLink: document.getElementById('fp-escuchar-link').value.trim(),
+        verTitle: document.getElementById('fp-ver-title').value.trim(),
+        verDesc: document.getElementById('fp-ver-desc').value.trim(),
+        verLink: document.getElementById('fp-ver-link').value.trim(),
+        garageDesc: document.getElementById('fp-garage-desc').value.trim(),
+        garageLink: document.getElementById('fp-garage-link').value.trim(),
+        mistuDesc: document.getElementById('fp-mistu-desc').value.trim(),
+        mistuLink: document.getElementById('fp-mistu-link').value.trim(),
+        dossierDesc: document.getElementById('fp-dossier-desc').value.trim(),
+        dossierLines: document.getElementById('fp-dossier-lines').value.split('\n').map(l => l.trim()).filter(Boolean),
+        dossierSpaces: document.getElementById('fp-dossier-spaces').value.split('\n').map(l => l.trim()).filter(Boolean),
+        email: document.getElementById('fp-email').value.trim() || DEFAULT_FRONTPAGE.email,
+        contactNote: document.getElementById('fp-contact-note').value.trim()
+      };
+
+      saveFrontpageToStorage();
+      renderFrontpage();
+      showCmsFeedback('Portada actualizada');
+    }
+
+    function resetFrontpageDefaults() {
+      frontpage = { ...DEFAULT_FRONTPAGE };
+      saveFrontpageToStorage();
+      populateFrontpageForm();
+      renderFrontpage();
+      showCmsFeedback('Textos base restaurados');
+    }
+
+    // Cambio entre pestañas del CMS
+    function switchCmsTab(tabName) {
+      const colsTab = document.getElementById('cms-tab-columns');
+      const fpTab = document.getElementById('cms-tab-frontpage');
+      const anTab = document.getElementById('cms-tab-analytics');
+
+      const btnCols = document.getElementById('tab-btn-columns');
+      const btnFp = document.getElementById('tab-btn-frontpage');
+      const btnAn = document.getElementById('tab-btn-analytics');
+
+      [colsTab, fpTab, anTab].forEach(el => el.classList.add('hidden'));
+      [btnCols, btnFp, btnAn].forEach(btn => {
+        btn.classList.remove('bg-sheet', 'text-ink');
+        btn.classList.add('bg-ink', 'text-sheet');
+      });
+
+      if (tabName === 'frontpage') {
+        fpTab.classList.remove('hidden');
+        btnFp.classList.remove('bg-ink', 'text-sheet');
+        btnFp.classList.add('bg-sheet', 'text-ink');
+        populateFrontpageForm();
+      } else if (tabName === 'analytics') {
+        anTab.classList.remove('hidden');
+        btnAn.classList.remove('bg-ink', 'text-sheet');
+        btnAn.classList.add('bg-sheet', 'text-ink');
+        populateAnalyticsForm();
+        renderAnalyticsDashboard();
+      } else {
+        colsTab.classList.remove('hidden');
+        btnCols.classList.remove('bg-ink', 'text-sheet');
+        btnCols.classList.add('bg-sheet', 'text-ink');
+      }
+    }
+
+    function renderCategoryFilters() {
+      const container = document.getElementById('category-filters');
+      const categories = ['Todas', ...new Set(columns.map(c => c.category))];
+
+      container.innerHTML = categories.map(cat => {
+        const isActive = cat === activeCategory;
+        return `
+          <button
+            type="button"
+            onclick="filterByCategory('${cat}')"
+            class="px-2.5 py-1 font-display font-bold text-[11px] uppercase tracking-[0.1em] border transition-colors cursor-pointer ${
+              isActive
+                ? 'bg-ink text-sheet border-ink'
+                : 'bg-sheet text-ash border-ink/30 hover:border-ink hover:text-ink'
+            }"
+          >
+            ${cat}
+          </button>
+        `;
+      }).join('');
+    }
+
+    function filterByCategory(cat) {
+      activeCategory = cat;
+      renderCategoryFilters();
+      renderColumnsGrid();
+    }
+
+    // Renderizado asimétrico tipo revista contemporánea
+    function renderColumnsGrid() {
+      const grid = document.getElementById('columns-grid');
+      const filtered = activeCategory === 'Todas'
+        ? columns
+        : columns.filter(c => c.category === activeCategory);
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="md:col-span-12 border border-ink bg-sheet p-10 text-center">
+            <p class="font-display text-xl font-bold uppercase mb-2">Sin entradas en esta sección.</p>
+            <button type="button" onclick="openCmsEditor()" class="font-display font-bold text-xs uppercase underline cursor-pointer">
+              Redactar columna →
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = filtered.map((col, idx) => {
+        const isLead = idx === 0 && filtered.length > 1;
+        const spanClass = isLead ? 'md:col-span-7' : (idx === 1 && filtered.length > 1 ? 'md:col-span-5' : 'md:col-span-6');
+
+        return `
+          <article class="${spanClass} border border-ink bg-sheet flex flex-col justify-between">
+            <div>
+              <div onclick="openReaderModal('${col.id}')" class="aspect-[16/9] w-full overflow-hidden border-b border-ink bg-neutral-200 cursor-pointer">
+                <img
+                  src="${col.image || 'https://placehold.co/900x500/0D0D0D/FAFAFA?text=Archivo+Editorial'}"
+                  alt="${escapeHtml(col.title)}"
+                  onerror="this.src='https://placehold.co/900x500/0D0D0D/FAFAFA?text=Archivo+Editorial'"
+                  class="w-full h-full object-cover press-photo"
+                />
+              </div>
+
+              <div class="p-5 sm:p-6">
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-3 font-display font-bold text-[11px] uppercase tracking-[0.1em]">
+                  <time class="text-ash">${escapeHtml(col.date)}</time>
+                  <div class="flex items-center gap-1.5">
+                    <span class="px-2 py-0.5 bg-ink text-sheet">${escapeHtml(col.category)}</span>
+                    <span class="px-2 py-0.5 border border-ink text-ink">${escapeHtml(col.tag)}</span>
+                  </div>
+                </div>
+
+                <h3
+                  onclick="openReaderModal('${col.id}')"
+                  class="font-display ${isLead ? 'text-2xl sm:text-[28px]' : 'text-xl sm:text-2xl'} font-extrabold tracking-[-0.02em] leading-[1.18] text-ink mb-3 hover:underline underline-offset-4 cursor-pointer"
+                >
+                  ${escapeHtml(col.title)}
+                </h3>
+
+                <p class="font-body text-sm sm:text-[15px] text-ash leading-relaxed">
+                  ${escapeHtml(col.summary)}
+                </p>
+              </div>
+            </div>
+
+            <div class="px-5 sm:px-6 py-3 border-t border-ink flex items-center justify-between font-display font-bold text-xs uppercase tracking-[0.1em] bg-paper/60">
+              <button
+                type="button"
+                onclick="openReaderModal('${col.id}')"
+                class="hover:underline cursor-pointer"
+              >
+                Leer texto completo →
+              </button>
+              <button
+                type="button"
+                onclick="openCmsEditor('${col.id}')"
+                class="text-ash hover:text-ink cursor-pointer"
+              >
+                Editar
+              </button>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    // Formateo ligero de texto para el modal de lectura (negritas, cursivas, citas)
+    function formatEditorialBody(rawText) {
+      const safe = escapeHtml(rawText || '');
+      return safe
+        .split('\n\n')
+        .map(block => {
+          const trimmed = block.trim();
+          if (!trimmed) return '';
+          if (trimmed.startsWith('&gt; ')) {
+            const quote = trimmed.replace(/^&gt;\s*/, '');
+            return `<blockquote class="border-l-2 border-ink pl-4 my-6 font-display font-bold text-lg sm:text-xl leading-snug text-ink">${applyInlineFormatting(quote)}</blockquote>`;
+          }
+          return `<p>${applyInlineFormatting(trimmed).replace(/\n/g, '<br />')}</p>`;
+        })
+        .join('');
+    }
+
+    function applyInlineFormatting(str) {
+      return str
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.+?)\*/g, '<em>$1</em>');
+    }
+
+    function openReaderModal(id) {
+      const col = columns.find(c => c.id === id);
+      if (!col) return;
+
+      trackEditorialEvent('lectura_columna', {
+        id: col.id,
+        titulo: col.title,
+        categoria: col.category
+      });
+
+      document.getElementById('reader-category').textContent = col.category;
+      document.getElementById('reader-tag').textContent = col.tag;
+      document.getElementById('reader-date').textContent = col.date;
+      document.getElementById('reader-title').textContent = col.title;
+      document.getElementById('reader-summary').textContent = col.summary;
+      document.getElementById('reader-image').src = col.image || 'https://placehold.co/900x500/0D0D0D/FAFAFA?text=Archivo+Editorial';
+      document.getElementById('reader-body').innerHTML = formatEditorialBody(col.body || col.summary);
+
+      document.getElementById('reader-modal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeReaderModal() {
+      document.getElementById('reader-modal').classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    function openDossierModal() {
+      trackEditorialEvent('clic_enlace', { destino: 'Consulta Dossier Profesional' });
+      document.getElementById('dossier-modal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDossierModal() {
+      document.getElementById('dossier-modal').classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    // =====================================================================
+    // MESA DE REDACCIÓN (CMS VISUAL)
+    // =====================================================================
+    function openCmsEditor(columnId = null) {
+      document.getElementById('cms-drawer').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      switchCmsTab('columns');
+      renderCmsPostsList();
+      if (columnId) {
+        loadColumnIntoForm(columnId);
+      } else {
+        resetColumnForm();
+      }
+    }
+
+    function closeCmsEditor() {
+      document.getElementById('cms-drawer').classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    function renderCmsPostsList() {
+      const list = document.getElementById('cms-posts-list');
+      document.getElementById('cms-count').textContent = columns.length;
+
+      list.innerHTML = columns.map(col => `
+        <div
+          onclick="loadColumnIntoForm('${col.id}')"
+          class="p-2.5 border border-ink bg-sheet hover:bg-ink hover:text-sheet transition-colors cursor-pointer group"
+        >
+          <div class="flex items-center justify-between font-display font-bold text-[10px] uppercase tracking-[0.1em] text-ash group-hover:text-neutral-300 mb-1">
+            <span>${escapeHtml(col.date)}</span>
+            <span>${escapeHtml(col.category)}</span>
+          </div>
+          <p class="font-display text-sm font-bold line-clamp-1">${escapeHtml(col.title)}</p>
+        </div>
+      `).join('');
+    }
+
+    function loadColumnIntoForm(id) {
+      const col = columns.find(c => c.id === id);
+      if (!col) return;
+
+      document.getElementById('form-mode-label').textContent = 'Editando entrada';
+      document.getElementById('col-id').value = col.id;
+      document.getElementById('col-title').value = col.title;
+      document.getElementById('col-date').value = col.date;
+      document.getElementById('col-category').value = col.category;
+      document.getElementById('col-tag').value = col.tag;
+      document.getElementById('col-image').value = col.image || '';
+      document.getElementById('col-summary').value = col.summary;
+      document.getElementById('col-body').value = col.body || '';
+      document.getElementById('delete-col-btn').classList.remove('hidden');
+    }
+
+    function resetColumnForm() {
+      document.getElementById('form-mode-label').textContent = 'Nueva columna';
+      document.getElementById('column-editor-form').reset();
+      document.getElementById('col-id').value = '';
+
+      const months = ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC'];
+      const now = new Date();
+      document.getElementById('col-date').value = `${String(now.getDate()).padStart(2, '0')} ${months[now.getMonth()]} ${now.getFullYear()}`;
+      document.getElementById('col-tag').value = '#Oaxaca';
+      document.getElementById('delete-col-btn').classList.add('hidden');
+    }
+
+    function handleSaveColumn(e) {
+      e.preventDefault();
+      const id = document.getElementById('col-id').value;
+      const title = document.getElementById('col-title').value.trim();
+      const date = document.getElementById('col-date').value.trim().toUpperCase();
+      const category = document.getElementById('col-category').value;
+      let tag = document.getElementById('col-tag').value.trim();
+      if (tag && !tag.startsWith('#')) tag = '#' + tag;
+      const image = document.getElementById('col-image').value.trim() || 'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=1000&q=80';
+      const summary = document.getElementById('col-summary').value.trim();
+      const body = document.getElementById('col-body').value.trim();
+
+      if (id) {
+        const idx = columns.findIndex(c => c.id === id);
+        if (idx !== -1) {
+          columns[idx] = { id, title, date, category, tag, image, summary, body };
+        }
+      } else {
+        const newCol = {
+          id: 'col-' + Date.now(),
+          title,
+          date,
+          category,
+          tag,
+          image,
+          summary,
+          body
+        };
+        columns.unshift(newCol);
+        document.getElementById('col-id').value = newCol.id;
+        document.getElementById('form-mode-label').textContent = 'Editando entrada';
+        document.getElementById('delete-col-btn').classList.remove('hidden');
+      }
+
+      saveColumnsToStorage();
+      renderCategoryFilters();
+      renderColumnsGrid();
+      renderCmsPostsList();
+      showCmsFeedback('Publicada en portada');
+    }
+
+    function deleteCurrentColumn() {
+      const id = document.getElementById('col-id').value;
+      if (!id) return;
+      columns = columns.filter(c => c.id !== id);
+      saveColumnsToStorage();
+      renderCategoryFilters();
+      renderColumnsGrid();
+      renderCmsPostsList();
+      resetColumnForm();
+      showCmsFeedback('Entrada eliminada');
+    }
+
+    // Herramientas rápidas de formato en el textarea
+    function wrapText(prefix, suffix) {
+      const textarea = document.getElementById('col-body');
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const selected = textarea.value.substring(start, end) || 'texto';
+      const replacement = prefix + selected + suffix;
+      textarea.value = textarea.value.substring(0, start) + replacement + textarea.value.substring(end);
+      textarea.focus();
+    }
+
+    function handleImageUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        document.getElementById('col-image').value = e.target.result;
+        showCmsFeedback('Fotografía cargada');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function handleProfilePhotoUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        document.getElementById('fp-photo').value = e.target.result;
+        document.getElementById('fp-photo-preview').src = e.target.result;
+        showCmsFeedback('Retrato cargado');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function exportSiteData() {
+      const payload = {
+        autor: frontpage.name,
+        actualizado: new Date().toISOString(),
+        portada: frontpage,
+        columnas: columns,
+        analitica: analyticsConfig
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'carlos-villalobos-sitio-completo.json';
+      a.click();
+      URL.revokeObjectURL(url);
+      showCmsFeedback('Respaldo JSON descargado');
+    }
+
+    function importSiteData(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        try {
+          const data = JSON.parse(e.target.result);
+          if (Array.isArray(data.columnas)) {
+            columns = data.columnas;
+            saveColumnsToStorage();
+          }
+          if (data.portada) {
+            frontpage = { ...DEFAULT_FRONTPAGE, ...data.portada };
+            saveFrontpageToStorage();
+          } else if (data.identidad) {
+            frontpage = { ...DEFAULT_FRONTPAGE, ...data.identidad };
+            saveFrontpageToStorage();
+          }
+          if (data.analitica) {
+            analyticsConfig = { ...DEFAULT_ANALYTICS, ...data.analitica };
+            saveAnalyticsToStorage();
+            initAnalyticsProviders();
+          }
+          renderFrontpage();
+          populateFrontpageForm();
+          populateAnalyticsForm();
+          renderAnalyticsDashboard();
+          renderCategoryFilters();
+          renderColumnsGrid();
+          renderCmsPostsList();
+          showCmsFeedback('Sitio importado');
+        } catch (err) {
+          showCmsFeedback('Error en formato JSON');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function showCmsFeedback(msg) {
+      const el = document.getElementById('cms-feedback');
+      el.textContent = msg;
+      el.classList.remove('hidden');
+      setTimeout(() => el.classList.add('hidden'), 2400);
+    }
+
+    function copyEmail() {
+      const email = frontpage.email || 'carlosavme@gmail.com';
+      const tempInput = document.createElement('input');
+      tempInput.value = email;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInput);
+
+      trackEditorialEvent('clic_enlace', { destino: 'Copiar correo electrónico' });
+
+      const label = document.getElementById('copy-email-text');
+      label.textContent = 'Copiado al portapapeles';
+      setTimeout(() => {
+        label.textContent = 'Copiar dirección';
+      }, 2200);
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+  </script>
+</body>
+</html>
