@@ -119,6 +119,14 @@
         border: none !important;
       }
     }
+
+  /* Ocultar insignia flotante inferior de Netlify */
+[class*="netlify-badge"],
+a[href*="netlify.com/?utm_campaign=badge"],
+iframe[src*="netlify"] {
+  display: none !important;
+  visibility: hidden !important;
+}
   </style>
 </head>
 <body class="bg-paper text-ink selection:bg-ink selection:text-sheet">
